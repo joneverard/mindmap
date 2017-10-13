@@ -1,0 +1,39 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.create-btn {
+    font-size: 50px;
+    height: 100%;
+    border-radius: 15px;
+    display: inline-block;
+    text-align: left;
+}
+
+.ribbon {
+    /*padding: 15px;*/
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: block;
+    float: left;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+    padding: auto;
+}
+
+.main .initial-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
