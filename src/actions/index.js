@@ -1,7 +1,9 @@
+import {randomPosition} from '../utilities';
 export const CREATE = 'create';
 
 export function createNode() {
     var d = new Date();
+    var pos = randomPosition(500,100);
 
     console.log(d.getTime());
     return {
@@ -9,8 +11,9 @@ export function createNode() {
         payload: {
             title: 'New Node',
             nodeType: 'A',
-            color: '#333333',
-            id: d.getTime()
+            color: '#fff',
+            id: d.getTime(),
+            position: pos
         }
     }
 }

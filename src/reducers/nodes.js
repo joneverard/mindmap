@@ -1,18 +1,21 @@
 import { CREATE } from '../actions';
 
-const initialState = [
+var initialState = []
+initialState.push(
     {
         title: 'this is an initial node',
         type: 'A',
-        color: '#e34f62'
+        color: 'white',
+        position: ['50%', '50%'],
+        id: 12345678910
     }
-]
+);
 
 export default function NodesReducer(state=initialState, action) {
     switch (action.type) {
-        case 'hello this is not an action':
-            return state.push(action.payload);
+        case CREATE:
+            return [...state, action.payload];
         default:
-            return state
+            return state;
     }
 }

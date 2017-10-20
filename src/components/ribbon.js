@@ -18,10 +18,17 @@ class Ribbon extends Component {
         return (
             <div className="ribbon">
                 <button
-                className="button-primary create-btn"
+                className="create-btn"
                 onClick={() => {this.props.createNode()}}>
                 +
                 </button>
+                <input
+                    type="text"
+                    className="title-box"
+                    placeholder="enter a node title"
+                    >
+
+                </input>
             </div>
         )
     }
