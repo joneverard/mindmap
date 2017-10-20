@@ -11,24 +11,39 @@ import { createNode } from '../actions';
 class Ribbon extends Component {
     constructor(props) {
         super(props);
-        this.state = '';
+        this.state = {title: ''};
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.createNode(this.state.title);
+    }
+
+    onInputChange(title) {
+        this.setState({title: title});
+        console.log(this.state);
     }
 
     render() {
         return (
             <div className="ribbon">
-                <button
-                className="create-btn"
-                onClick={() => {this.props.createNode()}}>
-                +
-                </button>
-                <input
-                    type="text"
-                    className="title-box"
-                    placeholder="enter a node title"
-                    >
+                <form onSubmit={(e) => {this.handleSubmit(e)}}>
+                    <button
+                        type="submit"
+                        className="create-btn"
+                        >
+                    +
+                    </button>
+                    <input
+                        type="text"
+                        className="title-box"
+                        placeholder="enter a node title"
+                        onChange={(e) => this.onInputChange(e.target.value)}
+                        >
 
-                </input>
+                    </input>
+                </form>
             </div>
         )
     }
@@ -40,3 +55,5 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(null, mapDispatchToProps)(Ribbon);
+
+                        // onClick={() => {this.props.createNode()}}>
