@@ -53,6 +53,7 @@ body {
 
 .node h5 {
     margin-bottom: 0;
+    font-size: 18px;
 }
 
 .title-box {
@@ -62,4 +63,8 @@ body {
     box-sizing: content-box;
     margin-top: 22px;
     margin-left: 15px;
+}
+
+.selected {
+    border: 2px solid blue;
 }

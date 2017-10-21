@@ -6,7 +6,7 @@ initialState.push(
         title: 'this is an initial node',
         type: 'A',
         color: 'white',
-        position: ['50%', '50%'],
+        position: ['0','0'],
         id: 12345678910
     }
 );

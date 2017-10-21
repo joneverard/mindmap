@@ -18,11 +18,11 @@ class Ribbon extends Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.createNode(this.state.title);
+        this.setState({title: ''});
     }
 
     onInputChange(title) {
         this.setState({title: title});
-        console.log(this.state);
     }
 
     render() {
@@ -40,6 +40,7 @@ class Ribbon extends Component {
                         className="title-box"
                         placeholder="enter a node title"
                         onChange={(e) => this.onInputChange(e.target.value)}
+                        value={this.state.title}
                         >
 
                     </input>
@@ -55,5 +56,3 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(null, mapDispatchToProps)(Ribbon);
-
-                        // onClick={() => {this.props.createNode()}}>

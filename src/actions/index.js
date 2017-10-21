@@ -13,7 +13,7 @@ export function createNode(title) {
             nodeType: 'A',
             color: '#fff',
             id: d.getTime(),
-            position: pos
+            position: [0,0]
         }
     }
 }
