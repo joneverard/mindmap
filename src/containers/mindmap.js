@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Node from '../components/node';
+import MapView from '../components/map';
 
 class MindMap extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class MindMap extends Component {
             <Node
                 title={node.title}
                 style={styleProps}
+                id={node.id}
                 key={node.id}
                 />
         )
@@ -33,6 +35,7 @@ class MindMap extends Component {
         return (
             <div className="main">
                 {this.props.nodes.map(this.renderNode)}
+                <MapView />
             </div>
         )
     }

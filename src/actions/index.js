@@ -1,11 +1,9 @@
 import {randomPosition} from '../utilities';
 export const CREATE = 'create';
+export const SELECT = 'select';
 
 export function createNode(title) {
     var d = new Date();
-    var pos = randomPosition(500,100);
-
-    console.log(d.getTime());
     return {
         type: CREATE,
         payload: {
@@ -17,3 +15,11 @@ export function createNode(title) {
         }
     }
 }
+
+export function selectNode(id) {
+    return {
+        type: SELECT,
+        payload: id
+    }
+}
+

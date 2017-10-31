@@ -43,6 +43,7 @@ body {
 /*    position: absolute;
     top: 50%;
     left: 50%;*/
+    transition: visibility 0.2s ease;
     transform: translateX(-50%) translateY(-50%);
     text-align: center;
     border-radius: 25px;
@@ -66,5 +67,15 @@ body {
 }
 
 .selected {
-    border: 2px solid blue;
+    border: 1.5px solid #0081a8;
+    transition: border-color 0.2s ease;
+}
+
+svg {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    overflow-y: hidden;
 }
