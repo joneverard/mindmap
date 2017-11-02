@@ -3,12 +3,12 @@ import Draggable from 'react-draggable';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectNode } from '../actions';
+import { selectNode, updatePosition } from '../actions';
 
 class Node extends Component {
     constructor(props) {
         super(props);
-        this.state = {x: 100, y:100};
+        // this.state = {x: 100, y:100};
         this.setState = this.setState.bind(this);
     }
 
@@ -19,13 +19,14 @@ class Node extends Component {
 
     handleStop(e) {
         var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
-        this.setState({x: rect.x, y: rect.y});
+        // this.setState({x: rect.x, y: rect.y});
+        this.props.updatePosition(this.props.id, rect);
     }
 
     render() {
         return (
             <Draggable
-                position={this.state}
+                position={this.props.position}
                 onStop={(e) => {this.handleStop(e)}}
                 onMouseDown={(e) => {this.props.selectNode(this.props.id);}}>
                 <div
@@ -39,7 +40,7 @@ class Node extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode}, dispatch);
+    return bindActionCreators({selectNode, updatePosition}, dispatch);
 }
 
 function mapStateToProps(state) {

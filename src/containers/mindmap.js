@@ -17,14 +17,15 @@ class MindMap extends Component {
 
     renderNode(node) {
         let styleProps = {
-            backgroundColor: node.color,
-            left: node.position[0],
-            top: node.position[1],
+            backgroundColor: node.color
+            // left: node.position[0],
+            // top: node.position[1],
         }
         return (
             <Node
                 title={node.title}
                 style={styleProps}
+                position={node.position}
                 id={node.id}
                 key={node.id}
                 />

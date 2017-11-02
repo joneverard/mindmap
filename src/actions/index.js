@@ -1,6 +1,7 @@
 import {randomPosition} from '../utilities';
 export const CREATE = 'create';
 export const SELECT = 'select';
+export const UPDATE = 'update';
 
 export function createNode(title) {
     var d = new Date();
@@ -11,7 +12,7 @@ export function createNode(title) {
             nodeType: 'A',
             color: '#fff',
             id: d.getTime(),
-            position: [0,0]
+            position: {x: 100, y: 100}
         }
     }
 }
@@ -23,3 +24,9 @@ export function selectNode(id) {
     }
 }
 
+export function updatePosition(nodeid, rect) {
+    return {
+        type: UPDATE,
+        payload: {id: nodeid, position: {x:rect.x, y:rect.y}}
+    }
+}

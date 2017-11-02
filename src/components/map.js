@@ -19,7 +19,14 @@ class MapView extends Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
-        this.dosomething();
+        var svg = select('svg')
+        svg.attr('height', this.state.height)
+           .attr('width', this.state.width);
+        svg.append('g')
+            .attr('class', 'links')
+            .attr('stroke', '#333')
+        this.renderMap();
+        // this.dosomething();
     }
 
     componentWillUnmount() {
@@ -34,38 +41,53 @@ class MapView extends Component {
         var data = [...this.state.data];
         data[i] = {x: [d.x[0]+=event.dx, d.x[1]+=event.dx], y:[d.y[0]+=event.dy, d.y[1]+=event.dy]}
         this.setState({data: data});
-        this.dosomething();
     }
 
-    dosomething() {
-    var svg = select("svg")
-    svg.attr('height', this.state.height)
-        .attr('width', this.state.width)
+    componentDidUpdate() {
+        this.renderMap();
+    }
 
-    var link = svg.append("g")
-      .attr("class", "links")
-      .attr('stroke', 'black')
-    .selectAll("line")
-    .data(this.state.data)
-    .enter()
-    .append("line")
-      .attr('x1', function(d) {
-        return d.x[0];
-      })
-      .attr('x2', function(d) {
-        return d.x[1];
-      })
-      .attr('y1', function(d) {
-        return d.y[0];
-      })
-      .attr('y2', function(d) {
-        return d.y[1];
-      })
-      .attr("stroke-width", 5)
-      .call(drag().on('start', function(e, i) {
-        console.log(e, i);
-      })
-      .on('drag', (d, i) => this.handleDrag(d, i)));
+    renderMap() {
+        var mapConnections = select('g')
+                .selectAll('line')
+                .data(this.state.data, function(d) {
+                    return d.x
+                });
+
+        mapConnections
+            .exit()
+            .remove();
+
+        mapConnections
+        .enter()
+        .append("line")
+          .attr('x1', function(d) {
+            return d.x[0];
+          })
+          .attr('x2', function(d) {
+            return d.x[1];
+          })
+          .attr('y1', function(d) {
+            return d.y[0];
+          })
+          .attr('y2', function(d) {
+            return d.y[1];
+          })
+          .attr("stroke-width", 5)
+
+        .merge(mapConnections)
+          .call(drag().on('start', function(d, i)  {
+            console.log(d, i);
+          })
+          .on('drag', (d, i) => this.handleDrag(d, i)))
+
+    }
+
+    updateD3Data() {
+      // .call(drag().on('start', function(e, i) {
+      //   console.log(e, i);
+      // })
+      // .on('drag', (d, i) => this.handleDrag(d, i)));
   };
 
     render() {
