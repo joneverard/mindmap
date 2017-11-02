@@ -38,7 +38,7 @@ class MapView extends Component {
     }
 
     handleDrag(d, i) {
-        var data = [...this.state.data];
+        var data = [...this.props.connections];
         data[i] = {x: [d.x[0]+=event.dx, d.x[1]+=event.dx], y:[d.y[0]+=event.dy, d.y[1]+=event.dy]}
         this.setState({data: data});
     }
@@ -48,39 +48,38 @@ class MapView extends Component {
     }
 
     renderMap() {
+        // console.log(this.props.connections);
         var mapConnections = select('g')
                 .selectAll('line')
-                .data(this.state.data, function(d) {
-                    return d.x
-                });
+                .data(this.props.connections, function(d) {
+                    return d
+                })
+                .attr('x2', function(d) {
+                    return d.end.position.x;
+                })
+                .attr('y2', function(d) {
+                    return d.end.position.y;
+                })
 
-        mapConnections
-            .exit()
-            .remove();
+            mapConnections
+                .exit()
+                .remove();
 
-        mapConnections
-        .enter()
-        .append("line")
-          .attr('x1', function(d) {
-            return d.x[0];
-          })
-          .attr('x2', function(d) {
-            return d.x[1];
-          })
-          .attr('y1', function(d) {
-            return d.y[0];
-          })
-          .attr('y2', function(d) {
-            return d.y[1];
-          })
-          .attr("stroke-width", 5)
+            mapConnections
+                .enter()
+                .append('line')
+                    .attr('x1', 250)
+                    .attr('y1', 250)
+                    .attr('x2', function(d) {
+                        return d.end.position.x;
+                    })
+                    .attr('y2', function(d) {
+                        return d.end.position.y;
+                    })
+                    .attr('stroke-width', 5)
 
-        .merge(mapConnections)
-          .call(drag().on('start', function(d, i)  {
-            console.log(d, i);
-          })
-          .on('drag', (d, i) => this.handleDrag(d, i)))
-
+                    .merge(mapConnections);
+            // console.log(mapConnections)
     }
 
     updateD3Data() {
@@ -99,8 +98,48 @@ class MapView extends Component {
 
 function mapStateToProps(state) {
     return {
-        connections: state.connections
+        connections: state.Connections
     }
 }
 
+// function mapDispatchToProps(dispatch) {
+//     return bindActionCreators({})
+// }
+
 export default connect(mapStateToProps)(MapView)
+
+
+
+
+        // var mapConnections = select('g')
+        //         .selectAll('line')
+        //         .data(this.state.data, function(d) {
+        //             return d.x
+        //         });
+
+        // mapConnections
+        //     .exit()
+        //     .remove();
+
+        // mapConnections
+        // .enter()
+        // .append("line")
+        //   .attr('x1', function(d) {
+        //     return d.x[0];
+        //   })
+        //   .attr('x2', function(d) {
+        //     return d.x[1];
+        //   })
+        //   .attr('y1', function(d) {
+        //     return d.y[0];
+        //   })
+        //   .attr('y2', function(d) {
+        //     return d.y[1];
+        //   })
+        //   .attr("stroke-width", 5)
+
+        // .merge(mapConnections)
+        //   .call(drag().on('start', function(d, i)  {
+        //     console.log(d, i);
+        //   })
+        //   .on('drag', (d, i) => this.handleDrag(d, i)))

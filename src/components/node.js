@@ -3,7 +3,8 @@ import Draggable from 'react-draggable';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectNode, updatePosition } from '../actions';
+import { selectNode, updatePosition, dragLines } from '../actions';
+import { select, selectAll, drag, event } from 'd3';
 
 class Node extends Component {
     constructor(props) {
@@ -15,6 +16,14 @@ class Node extends Component {
     componentDidMount() {
         var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
         this.setState({rect: rect})
+        // var nodes = selectAll('.node')
+            // .call(drag().on('drag', () => this.handleDrag(this.props)));
+    }
+
+    handleDrag(e) {
+        var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        // console.log(e);
+        this.props.dragLines(this.props.id, e);
     }
 
     handleStop(e) {
@@ -27,6 +36,7 @@ class Node extends Component {
         return (
             <Draggable
                 position={this.props.position}
+                onDrag={(e) => this.handleDrag(e)}
                 onStop={(e) => {this.handleStop(e)}}
                 onMouseDown={(e) => {this.props.selectNode(this.props.id);}}>
                 <div
@@ -40,7 +50,7 @@ class Node extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition}, dispatch);
+    return bindActionCreators({selectNode, updatePosition, dragLines}, dispatch);
 }
 
 function mapStateToProps(state) {

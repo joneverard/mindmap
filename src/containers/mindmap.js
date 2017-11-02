@@ -15,6 +15,10 @@ class MindMap extends Component {
 
     }
 
+    bindData() {
+
+    }
+
     renderNode(node) {
         let styleProps = {
             backgroundColor: node.color
@@ -45,7 +49,8 @@ class MindMap extends Component {
 function mapStateToProps(state) {
     return {
         initial: state.initial,
-        nodes: state.Nodes
+        nodes: state.Nodes,
+        connections: state.Connections
     };
 }
 

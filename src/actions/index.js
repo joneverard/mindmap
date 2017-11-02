@@ -2,6 +2,7 @@ import {randomPosition} from '../utilities';
 export const CREATE = 'create';
 export const SELECT = 'select';
 export const UPDATE = 'update';
+export const DRAG = 'drag';
 
 export function createNode(title) {
     var d = new Date();
@@ -28,5 +29,14 @@ export function updatePosition(nodeid, rect) {
     return {
         type: UPDATE,
         payload: {id: nodeid, position: {x:rect.x, y:rect.y}}
+    }
+}
+
+export function dragLines(nodeid, event) {
+    // console.log(event);
+    console.log(nodeid);
+    return {
+        type: DRAG,
+        payload: {id: nodeid, delta: event}
     }
 }
