@@ -11,6 +11,10 @@ export default function SelectReducer(state=null, action) {
                 x: action.payload.position.x,
                 y: action.payload.position.y
             }
+            selected.anchor = {
+                x: action.payload.anchor.x,
+                y: action.payload.anchor.y
+            }
             return selected;
         default:
             return state;

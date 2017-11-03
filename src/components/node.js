@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectNode, updatePosition, dragLines } from '../actions';
+import { selectNode, updatePosition, dragLines, createConnection, updateAnchor } from '../actions';
 import { select, selectAll, drag, event } from 'd3';
 
 class Node extends Component {
@@ -14,20 +14,23 @@ class Node extends Component {
     }
 
     componentDidMount() {
-        var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
-        this.setState({rect: rect})
+        var rect = this.node.getBoundingClientRect();
+        this.setState({rect: rect});
+        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
+        this.props.dragLines(this.props.id, anchorPos);
+        this.props.updateAnchor(this.props, anchorPos);
         // var nodes = selectAll('.node')
             // .call(drag().on('drag', () => this.handleDrag(this.props)));
     }
 
     handleDrag(e) {
-        var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.dragLines(this.props.id, anchorPos);
     }
 
     handleStop(e) {
-        var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        var rect = this.node.getBoundingClientRect();
         // this.setState({x: rect.x, y: rect.y});
         this.props.updatePosition(this.props.id, rect);
     }
@@ -43,8 +46,10 @@ class Node extends Component {
                 position={this.props.position}
                 onDrag={(e) => this.handleDrag(e)}
                 onStop={(e) => {this.handleStop(e)}}
-                onMouseDown={(e) => {this.props.selectNode(this.props);}}>
+                onMouseDown={(e) => {this.props.selectNode(this.props);}}
+                >
                 <div
+                    ref={(node) => {this.node = node}}
                     className={(id === this.props.id) ? "node selected" : "node"}
                     style={this.props.style}>
                     <h5>{this.props.title}</h5>
@@ -55,7 +60,7 @@ class Node extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition, dragLines}, dispatch);
+    return bindActionCreators({selectNode, updatePosition, dragLines, createConnection, updateAnchor}, dispatch);
 }
 
 function mapStateToProps(state) {

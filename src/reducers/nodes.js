@@ -1,4 +1,4 @@
-import { CREATE, UPDATE } from '../actions';
+import { CREATE, UPDATE, UPDATE_ANCHOR } from '../actions';
 
 var initialState = []
 initialState.push(
@@ -7,6 +7,7 @@ initialState.push(
         type: 'A',
         color: 'white',
         position: {x: 350, y: 350},
+        anchor: {x: 350, y: 350},
         id: 12345678910
     }
 );
@@ -24,6 +25,14 @@ export default function NodesReducer(state=initialState, action) {
                 return node;
             })
             // console.log(data);
+            return data;
+        case UPDATE_ANCHOR:
+            var data = [...state].map(function(node) {
+                if (node.id === action.payload.id) {
+                    node.anchor = action.payload.anchor;
+                }
+                return node;
+            })
             return data;
         default:
             return state;

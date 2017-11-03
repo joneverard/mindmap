@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN } from '../actions';
+import { DRAG, CREATE_CONN, UPDATE_ANCHOR } from '../actions';
 
 const initial = {
     x1: 100,
@@ -22,27 +22,32 @@ export default function ConnectionsReducer(state={}, action) {
                     connection.end.position.x = action.payload.anchor.x
                     connection.end.position.y = action.payload.anchor.y
 
-                } else if (connection.start.id === action.payload.id) {
+                }
+                if (connection.start.id === action.payload.id) {
                     connection.start.position.x = action.payload.anchor.x
                     connection.start.position.y = action.payload.anchor.y
                 }
                 return connection
-            });
-            // console.log(data);
+            });     // console.log(data);
             return data;
         case CREATE_CONN:
-            // console.log(action.payload);
-            var newConn = {
-                start: {
-                    id: action.payload.start.id,
-                    position: {x: action.payload.start.position.x, y: action.payload.start.position.y}
-                },
-                end: {
-                    id: action.payload.end.id,
-                    position: {x: action.payload.end.position.x, y: action.payload.end.position.y}
+            console.log(action.payload.start);
+            if (action.payload.start ) {
+                var newConn = {
+                    start: {
+                        id: action.payload.start.id,
+                        position: {x: action.payload.start.anchor.x, y: action.payload.start.anchor.y}
+                    },
+                    end: {
+                        id: action.payload.end.id,
+                        position: {x: action.payload.end.position.x, y: action.payload.end.position.y}
+                    }
                 }
+                return [...state, newConn];
+            } else {
+                return state
             }
-            return [...state, newConn];
+
         default:
             return state;
     }
