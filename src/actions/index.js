@@ -3,6 +3,7 @@ export const CREATE = 'create';
 export const SELECT = 'select';
 export const UPDATE = 'update';
 export const DRAG = 'drag';
+export const CREATE_CONN = 'create_conn';
 
 export function createNode(title) {
     var d = new Date();
@@ -32,11 +33,18 @@ export function updatePosition(nodeid, rect) {
     }
 }
 
-export function dragLines(nodeid, event) {
-    // console.log(event);
+export function dragLines(nodeid, anchor) {
+    // console.log(anchor);
     console.log(nodeid);
     return {
         type: DRAG,
-        payload: {id: nodeid, delta: event}
+        payload: {id: nodeid, anchor: anchor}
+    }
+}
+
+export function createConnection(start, end) {
+    return {
+        type: CREATE_CONN,
+        payload: {start, end}
     }
 }

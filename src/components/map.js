@@ -48,11 +48,17 @@ class MapView extends Component {
     }
 
     renderMap() {
-        // console.log(this.props.connections);
+        console.log(this.props.connections);
         var mapConnections = select('g')
                 .selectAll('line')
                 .data(this.props.connections, function(d) {
                     return d
+                })
+                .attr('x1', function(d) {
+                    return d.start.position.x;
+                })
+                .attr('y1', function(d) {
+                    return d.start.position.y;
                 })
                 .attr('x2', function(d) {
                     return d.end.position.x;
@@ -68,8 +74,12 @@ class MapView extends Component {
             mapConnections
                 .enter()
                 .append('line')
-                    .attr('x1', 250)
-                    .attr('y1', 250)
+                    .attr('x1', function(d) {
+                        return d.start.position.x;
+                    })
+                    .attr('y1', function(d) {
+                        return d.start.position.y;
+                    })
                     .attr('x2', function(d) {
                         return d.end.position.x;
                     })

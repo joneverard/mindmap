@@ -1,4 +1,4 @@
-import { DRAG } from '../actions';
+import { DRAG, CREATE_CONN } from '../actions';
 
 const initial = {
     x1: 100,
@@ -14,17 +14,35 @@ const initial_2 = [{
 }]
 
 
-export default function ConnectionsReducer(state=initial_2, action) {
+export default function ConnectionsReducer(state={}, action) {
     switch (action.type) {
         case DRAG:
             var data = [...state].map(function(connection) {
-                // if (connection.end.id === action.payload.id) {
-                connection.end.position.x = action.payload.delta.clientX
-                connection.end.position.y = action.payload.delta.clientY
+                if (connection.end.id === action.payload.id) {
+                    connection.end.position.x = action.payload.anchor.x
+                    connection.end.position.y = action.payload.anchor.y
+
+                } else if (connection.start.id === action.payload.id) {
+                    connection.start.position.x = action.payload.anchor.x
+                    connection.start.position.y = action.payload.anchor.y
+                }
                 return connection
             });
             // console.log(data);
             return data;
+        case CREATE_CONN:
+            // console.log(action.payload);
+            var newConn = {
+                start: {
+                    id: action.payload.start.id,
+                    position: {x: action.payload.start.position.x, y: action.payload.start.position.y}
+                },
+                end: {
+                    id: action.payload.end.id,
+                    position: {x: action.payload.end.position.x, y: action.payload.end.position.y}
+                }
+            }
+            return [...state, newConn];
         default:
             return state;
     }

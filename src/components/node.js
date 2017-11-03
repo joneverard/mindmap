@@ -22,8 +22,8 @@ class Node extends Component {
 
     handleDrag(e) {
         var rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
-        // console.log(e);
-        this.props.dragLines(this.props.id, e);
+        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
+        this.props.dragLines(this.props.id, anchorPos);
     }
 
     handleStop(e) {
@@ -33,14 +33,19 @@ class Node extends Component {
     }
 
     render() {
+        if (this.props.selected) {
+            var id = this.props.selected.id;
+        } else {
+            var id = 0;
+        }
         return (
             <Draggable
                 position={this.props.position}
                 onDrag={(e) => this.handleDrag(e)}
                 onStop={(e) => {this.handleStop(e)}}
-                onMouseDown={(e) => {this.props.selectNode(this.props.id);}}>
+                onMouseDown={(e) => {this.props.selectNode(this.props);}}>
                 <div
-                    className={(this.props.selected === this.props.id) ? "node selected" : "node"}
+                    className={(id === this.props.id) ? "node selected" : "node"}
                     style={this.props.style}>
                     <h5>{this.props.title}</h5>
                 </div>

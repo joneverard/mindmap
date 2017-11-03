@@ -23,6 +23,7 @@ export default function NodesReducer(state=initialState, action) {
                 }
                 return node;
             })
+            // console.log(data);
             return data;
         default:
             return state;

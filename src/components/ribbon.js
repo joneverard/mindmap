@@ -4,7 +4,7 @@ import '../style/normalize.css';
 import '../style/style.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { createNode } from '../actions';
+import { createNode, createConnection } from '../actions';
 // will need to connect this to an action creator at some point.
 // import action from '../blahhhh actions.index.js'
 
@@ -17,7 +17,9 @@ class Ribbon extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.createNode(this.state.title);
+        var newNode = this.props.createNode(this.state.title);
+        console.log(this.props.selected);
+        this.props.createConnection(this.props.selected, newNode.payload);
         this.setState({title: ''});
     }
 
@@ -51,8 +53,11 @@ class Ribbon extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({createNode}, dispatch);
+    return bindActionCreators({createNode, createConnection}, dispatch);
 }
 
+function mapStateToProps(state)  {
+    return { selected: state.Selected }
+}
 
-export default connect(null, mapDispatchToProps)(Ribbon);
+export default connect(mapStateToProps, mapDispatchToProps)(Ribbon);
