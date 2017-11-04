@@ -3,13 +3,12 @@ import Draggable from 'react-draggable';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectNode, updatePosition, dragLines, createConnection, updateAnchor } from '../actions';
+import { selectNode, updatePosition, dragLines, updateAnchor } from '../actions';
 import { select, selectAll, drag, event } from 'd3';
 
 class Node extends Component {
     constructor(props) {
         super(props);
-        // this.state = {x: 100, y:100};
         this.setState = this.setState.bind(this);
     }
 
@@ -19,8 +18,6 @@ class Node extends Component {
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.dragLines(this.props.id, anchorPos);
         this.props.updateAnchor(this.props, anchorPos);
-        // var nodes = selectAll('.node')
-            // .call(drag().on('drag', () => this.handleDrag(this.props)));
     }
 
     handleDrag(e) {
@@ -31,7 +28,6 @@ class Node extends Component {
 
     handleStop(e) {
         var rect = this.node.getBoundingClientRect();
-        // this.setState({x: rect.x, y: rect.y});
         this.props.updatePosition(this.props.id, rect);
     }
 
@@ -52,7 +48,7 @@ class Node extends Component {
                     ref={(node) => {this.node = node}}
                     className={(id === this.props.id) ? "node selected" : "node"}
                     style={this.props.style}>
-                    <h5>{this.props.title}</h5>
+                    <p>{this.props.title}</p>
                 </div>
             </Draggable>
         )
@@ -60,14 +56,12 @@ class Node extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition, dragLines, createConnection, updateAnchor}, dispatch);
+    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor}, dispatch);
 }
 
 function mapStateToProps(state) {
     // should use an object as global state. with ids as keys.
-    // done this way each node becomes a container... aware of the global state.
-    // possibly better to have each node 'input only'.
     return {selected: state.Selected}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Node) // will need to connect this and make it a container.
+export default connect(mapStateToProps, mapDispatchToProps)(Node);

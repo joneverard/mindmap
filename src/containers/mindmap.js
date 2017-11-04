@@ -11,19 +11,9 @@ class MindMap extends Component {
         this.renderNode = this.renderNode.bind(this);
     }
 
-    componentDidMount() {
-
-    }
-
-    bindData() {
-
-    }
-
     renderNode(node) {
         let styleProps = {
             backgroundColor: node.color
-            // left: node.position[0],
-            // top: node.position[1],
         }
         return (
             <Node

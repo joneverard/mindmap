@@ -46,15 +46,15 @@ body {
     transition: visibility 0.2s ease;
     /*transform: translateX(-50%) translateY(-50%);*/
     text-align: center;
-    border-radius: 25px;
-    padding: 15px;
+    border-radius: 15px;
+    padding: 10px;
     border: 1px solid grey;
     position: absolute;
 }
 
-.node h5 {
+.node p {
     margin-bottom: 0;
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .title-box {

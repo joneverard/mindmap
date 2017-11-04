@@ -20,9 +20,3 @@ export default function SelectReducer(state=null, action) {
             return state;
     }
 }
-
-
-// return {
-//         type: UPDATE,
-//         payload: {id: nodeid, position: {x:rect.x, y:rect.y}}
-//     }

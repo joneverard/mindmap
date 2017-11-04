@@ -5,8 +5,6 @@ import '../style/style.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createNode, createConnection } from '../actions';
-// will need to connect this to an action creator at some point.
-// import action from '../blahhhh actions.index.js'
 
 class Ribbon extends Component {
     constructor(props) {
@@ -18,7 +16,6 @@ class Ribbon extends Component {
     handleSubmit(e) {
         e.preventDefault();
         var newNode = this.props.createNode(this.state.title);
-        // console.log(this.props.selected);
         this.props.createConnection(this.props.selected, newNode.payload);
         this.setState({title: ''});
     }

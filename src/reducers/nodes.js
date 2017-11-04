@@ -24,7 +24,6 @@ export default function NodesReducer(state=initialState, action) {
                 }
                 return node;
             })
-            // console.log(data);
             return data;
         case UPDATE_ANCHOR:
             var data = [...state].map(function(node) {

@@ -40,8 +40,6 @@ export function updatePosition(nodeid, rect) {
 }
 
 export function dragLines(nodeid, anchor) {
-    // console.log(anchor);
-    // console.log(nodeid);
     return {
         type: DRAG,
         payload: {id: nodeid, anchor: anchor}
