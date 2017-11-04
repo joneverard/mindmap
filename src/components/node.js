@@ -3,6 +3,7 @@ import Draggable from 'react-draggable';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import NodeControls from './node_controls';
 import { selectNode, updatePosition, dragLines, updateAnchor } from '../actions';
 import { select, selectAll, drag, event } from 'd3';
 
@@ -28,6 +29,7 @@ class Node extends Component {
 
     handleStop(e) {
         var rect = this.node.getBoundingClientRect();
+        console.log(rect);
         this.props.updatePosition(this.props.id, rect);
     }
 
@@ -44,16 +46,20 @@ class Node extends Component {
                 onStop={(e) => {this.handleStop(e)}}
                 onMouseDown={(e) => {this.props.selectNode(this.props);}}
                 >
-                <div
-                    ref={(node) => {this.node = node}}
-                    className={(id === this.props.id) ? "node selected" : "node"}
-                    style={this.props.style}>
-                    <p>{this.props.title}</p>
+                <div className="handle">
+                    <div
+                        ref={(node) => {this.node = node}}
+                        className={(id === this.props.id) ? "node selected" : "node"}
+                        style={this.props.style}>
+                        <p>{this.props.title}</p>
+                    </div>
+                    <NodeControls selected={id} nodeId={this.props.id} />
                 </div>
             </Draggable>
         )
     }
 }
+// <NodeControls selected={id} nodeId={this.props.id} />
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor}, dispatch);
