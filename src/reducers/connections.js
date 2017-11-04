@@ -28,7 +28,7 @@ export default function ConnectionsReducer(state={}, action) {
                     connection.start.position.y = action.payload.anchor.y
                 }
                 return connection
-            });     // console.log(data);
+            });
             return data;
         case CREATE_CONN:
             console.log(action.payload.start);
@@ -40,7 +40,7 @@ export default function ConnectionsReducer(state={}, action) {
                     },
                     end: {
                         id: action.payload.end.id,
-                        position: {x: action.payload.end.position.x, y: action.payload.end.position.y}
+                        position: {x: action.payload.end.anchor.x, y: action.payload.end.anchor.y}
                     }
                 }
                 return [...state, newConn];
@@ -52,6 +52,3 @@ export default function ConnectionsReducer(state={}, action) {
             return state;
     }
 }
-
-
-// data[i] = {x: [d.x[0]+=event.dx, d.x[1]+=event.dx], y:[d.y[0]+=event.dy, d.y[1]+=event.dy]}
