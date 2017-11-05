@@ -3,6 +3,7 @@ import Draggable from 'react-draggable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NodeControls from './node_controls';
+import EditNode from './edit_node';
 import { selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode } from '../actions';
 
 class Node extends Component {
@@ -10,6 +11,7 @@ class Node extends Component {
         super(props);
         this.setState = this.setState.bind(this);
         this.deleteNode = this.deleteNode.bind(this);
+        this.editNode = this.editNode.bind(this);
         this.getPosition = this.getPosition.bind(this);
     }
 
@@ -31,18 +33,22 @@ class Node extends Component {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.dragLines(this.props.id, anchorPos);
-        console.log('drag',e);
+        // console.log('drag',e);
     }
 
     handleStop(e) {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.updatePosition(this.props.id, rect);
-        console.log('stop',e);
+        // console.log('stop',e);
+    }
+
+    editNode() {
+        this.props.editNode(this.props.id);
     }
 
     deleteNode() {
-        this.props.deleteNode(this.props);
+        this.props.deleteNode(this.props.id);
     }
 
     render() {
@@ -61,14 +67,14 @@ class Node extends Component {
                 handle=".handle"
                 axis={this.props.edit ? "none" : "both"}
                 >
-                <div className="handle">
+                <div className={this.props.edit ? "node-container" :"node-container handle"}>
                     <div
                         ref={(node) => {this.node = node}}
                         className={(selectedId === this.props.id) ? "node selected" : "node"}
                         style={this.props.style}>
-                        <p>{this.props.title}</p>
+                        {this.props.edit ? <EditNode title={this.props.title} /> : <p>{this.props.title}</p>}
                     </div>
-                    { (selectedId === this.props.id) ? <NodeControls edit={this.props.edit} delete={this.deleteNode} /> : null}
+                    { (selectedId === this.props.id) ? <NodeControls edit={this.props.edit} editNode={this.editNode} delete={this.deleteNode} /> : null}
                 </div>
             </Draggable>
         )

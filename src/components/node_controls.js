@@ -8,13 +8,23 @@ class NodeControls extends Component {
     }
 
     render() {
-        var classList = (this.props.selected === this.props.nodeId) ? "node-controls fade-in" : "node-controls hide fade-out";
-        return (
-            <div className={classList}>
-                <button type="submit" onClick={this.props.editNode}>edit</button>
-                <button type="submit" onClick={this.props.delete}>delete</button>
-            </div>
-        )
+        // var classList = (this.props.selected === this.props.nodeId) ? "node-controls fade-in" : "node-controls hide fade-out";
+        var classList = "node-controls fade-in"
+        if (this.props.edit) {
+            return (
+                <div className={classList}>
+                    <button type="submit" className="save-btn">Save</button>
+                    <button type="submit">Cancel</button>
+                </div>
+            )
+        } else {
+            return (
+                <div className={classList}>
+                    <button type="submit" onClick={this.props.editNode}>Edit</button>
+                    <button type="submit" onClick={this.props.delete}>Delete</button>
+                </div>
+            )
+        }
     }
 }
 

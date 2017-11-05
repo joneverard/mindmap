@@ -1,7 +1,8 @@
 // import {randomPosition} from '../utilities';
 export const CREATE = 'create';
 export const SELECT = 'select';
-export const UPDATE = 'update';
+export const UPDATE_POS = 'update';
+export const EDIT_NODE = 'edit_node';
 export const DRAG = 'drag';
 export const CREATE_CONN = 'create_conn';
 export const UPDATE_ANCHOR = 'update_anchor';
@@ -31,7 +32,7 @@ export function selectNode(id) {
 
 export function updatePosition(nodeid, rect) {
     return {
-        type: UPDATE,
+        type: UPDATE_POS,
         payload: {
             id: nodeid,
             position: {x:rect.x, y:rect.y},
@@ -62,19 +63,18 @@ export function updateAnchor(nodeid, anchor) {
     }
 }
 
-export function deleteNode(node) {
-    console.log(node.id);
+export function deleteNode(nodeId) {
+    // console.log(node.id);
     return {
         type: DELETE_NODE,
-        payload: node.id
+        payload: nodeId
     }
 }
 
-export function editNode(node) {
-    console.log('hello');
+export function editNode(nodeId) {
     return {
-        type: 'hello',
-        payload: 1
+        type: EDIT_NODE,
+        payload: nodeId
     }
 }
 

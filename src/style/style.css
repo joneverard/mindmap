@@ -55,10 +55,14 @@ body {
     margin-bottom: 5px;
 }
 
-.handle {
+.node-container {
     position: absolute;
     display: inline-block;
     width: auto;
+}
+
+.handle {
+
 }
 
 .node p {
@@ -106,6 +110,11 @@ body {
 .node-controls button:first-of-type {
     margin-right: 5px;
     margin-left: 0px;
+}
+
+.node-controls .save-btn {
+    background-color: #0081a8;
+    color: #fff;
 }
 
 .hide {

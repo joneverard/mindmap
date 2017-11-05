@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { select } from 'd3';
-import { selectNode } from '../actions';
+import { selectNode, editNode } from '../actions';
 
 
 class MapView extends Component {
@@ -35,6 +35,11 @@ class MapView extends Component {
 
     componentDidUpdate() {
         this.renderMap();
+    }
+
+    cancelSelection(e) {
+        this.props.selectNode(null);
+        this.props.editNode(null);
     }
 
     renderMap() {
@@ -83,7 +88,7 @@ class MapView extends Component {
 
     render() {
         return (
-            <svg height={this.state.height} width={this.state.width} onClick={(e) => this.props.selectNode(null)}></svg>
+            <svg height={this.state.height} width={this.state.width} onClick={(e) => this.cancelSelection(e)}></svg>
         )
     }
 }
@@ -95,7 +100,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ selectNode }, dispatch);
+    return bindActionCreators({ selectNode, editNode }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
