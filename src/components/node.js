@@ -4,7 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NodeControls from './node_controls';
 import EditNode from './edit_node';
-import { selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode } from '../actions';
+import {
+    selectNode,
+    updatePosition,
+    dragLines,
+    updateAnchor,
+    deleteNode,
+    editNode,
+    saveNode
+} from '../actions';
 
 class Node extends Component {
     constructor(props) {
@@ -13,6 +21,10 @@ class Node extends Component {
         this.deleteNode = this.deleteNode.bind(this);
         this.editNode = this.editNode.bind(this);
         this.getPosition = this.getPosition.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.onTitleEdit = this.onTitleEdit.bind(this);
+        this.saveNode = this.saveNode.bind(this);
+        this.state = this.props;
     }
 
     componentDidMount() {
@@ -43,12 +55,28 @@ class Node extends Component {
         // console.log('stop',e);
     }
 
+    onTitleEdit(title) {
+        this.setState({title: title});
+        console.log(this.state);
+    }
+
     editNode() {
         this.props.editNode(this.props.id);
     }
 
+    saveNode() {
+        this.props.saveNode(this.props.id, this.state.title);
+        this.props.editNode(null);
+        this.props.selectNode(null);
+    }
+
     deleteNode() {
         this.props.deleteNode(this.props.id);
+    }
+
+    handleCancel(e) {
+        this.props.editNode(null);
+        this.props.selectNode(null);
     }
 
     render() {
@@ -72,9 +100,20 @@ class Node extends Component {
                         ref={(node) => {this.node = node}}
                         className={(selectedId === this.props.id) ? "node selected" : "node"}
                         style={this.props.style}>
-                        {this.props.edit ? <EditNode title={this.props.title} /> : <p>{this.props.title}</p>}
+                        {this.props.edit ?
+                            <EditNode
+                            title={this.props.title}
+                            onTitleEdit={this.onTitleEdit}
+                            saveNode={this.saveNode}/> :
+                            <p>{this.props.title}</p>}
                     </div>
-                    { (selectedId === this.props.id) ? <NodeControls edit={this.props.edit} editNode={this.editNode} delete={this.deleteNode} /> : null}
+                    { (selectedId === this.props.id) ?
+                        <NodeControls
+                            edit={this.props.edit}
+                            editNode={this.editNode}
+                            delete={this.deleteNode}
+                            cancel={(e) => this.handleCancel()}
+                            saveNode={this.saveNode} /> : null}
                 </div>
             </Draggable>
         )
@@ -84,7 +123,7 @@ class Node extends Component {
 // this is getting a little bit messy now...
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode}, dispatch);
+    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode, saveNode}, dispatch);
 }
 
 function mapStateToProps(state) {

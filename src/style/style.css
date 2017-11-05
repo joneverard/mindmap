@@ -8,6 +8,10 @@ body {
     width: 100%;
 }
 
+form {
+    margin: 0 !important;
+}
+
 .create-btn {
     font-size: 50px;
     height: 100%;

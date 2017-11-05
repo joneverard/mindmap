@@ -1,4 +1,4 @@
-import { CREATE, UPDATE_POS, DELETE_NODE, UPDATE_ANCHOR, EDIT_NODE, SELECT } from '../actions';
+import { CREATE, UPDATE_POS, DELETE_NODE, UPDATE_ANCHOR, EDIT_NODE, SELECT, SAVE_NODE } from '../actions';
 
 var initialState = []
 initialState.push(
@@ -8,7 +8,7 @@ initialState.push(
         color: 'white',
         position: {x: 350, y: 350},
         anchor: {x: 350, y: 350},
-        edit: true,
+        edit: false,
         id: 12345678910
     }
 );
@@ -20,9 +20,18 @@ export default function NodesReducer(state=initialState, action) {
         case CREATE:
             return [...state, action.payload];
 
+        case SAVE_NODE:
+            data = [...state].map(function(node) {
+                if (node.id === action.payload.nodeId) {
+                    node.title = action.payload.title;
+                }
+                return node;
+            });
+            return data;
+
         case SELECT:
             data = [...state].map(function(node) {
-                if (node && action.payload) {
+                if (node && action.payload ) {
                     if (node.id !== action.payload.id) {
                         node.edit = false;
                     }

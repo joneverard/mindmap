@@ -13,8 +13,8 @@ class NodeControls extends Component {
         if (this.props.edit) {
             return (
                 <div className={classList}>
-                    <button type="submit" className="save-btn">Save</button>
-                    <button type="submit">Cancel</button>
+                    <button type="submit" className="save-btn" onClick={this.props.saveNode}>Save</button>
+                    <button type="submit" onClick={this.props.cancel}>Cancel</button>
                 </div>
             )
         } else {

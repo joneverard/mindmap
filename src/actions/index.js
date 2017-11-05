@@ -7,6 +7,7 @@ export const DRAG = 'drag';
 export const CREATE_CONN = 'create_conn';
 export const UPDATE_ANCHOR = 'update_anchor';
 export const DELETE_NODE = 'delete_node';
+export const SAVE_NODE = 'save_node';
 
 export function createNode(title) {
     var d = new Date();
@@ -78,4 +79,10 @@ export function editNode(nodeId) {
     }
 }
 
+export function saveNode(nodeId, title) {
+    return {
+        type: SAVE_NODE,
+        payload: {nodeId, title} // this will eventually be a full node object containing content state from draft js aswell.
+    }
+}
 //{x: rect.x + rect.width/2, y: rect.y + rect.height/2}

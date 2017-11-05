@@ -10,11 +10,19 @@ class EditNode extends Component {
     onInputChange(e) {
         console.log(e.target.value);
         this.setState({title: e.target.value});
+        this.props.onTitleEdit(e.target.value);
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.saveNode();
     }
 
     render() {
         return (
-            <input type="text" value={this.state.title} onChange={(e) => this.onInputChange(e)}/>
+            <form onSubmit={(e) => {this.handleSubmit(e)}}>
+                <input type="text" value={this.state.title} onChange={(e) => this.onInputChange(e)}/>
+            </form>
         )
     }
 }
