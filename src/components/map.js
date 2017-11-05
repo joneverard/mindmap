@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { drag, select, event } from 'd3';
+import { select } from 'd3';
 import { selectNode } from '../actions';
 
 

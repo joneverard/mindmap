@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import Node from '../components/node';
 import MapView from '../components/map';
 
@@ -20,8 +20,10 @@ class MindMap extends Component {
                 title={node.title}
                 style={styleProps}
                 position={node.position}
+                anchor={node.anchor}
                 id={node.id}
                 key={node.id}
+                edit={node.edit}
                 />
         )
     }

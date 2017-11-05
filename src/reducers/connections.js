@@ -1,23 +1,11 @@
-import { DRAG, CREATE_CONN, UPDATE_ANCHOR } from '../actions';
-
-const initial = {
-    x1: 100,
-    x2: 200,
-    y1: 100,
-    y2: 200,
-    id: 123456789
-}
-
-const initial_2 = [{
-    start: {id: 200, position: {x: 250, y: 250}},
-    end: {id: 12345678910, position: {x: 450, y: 350}}
-}]
+import { DRAG, CREATE_CONN, DELETE_NODE } from '../actions';
 
 
-export default function ConnectionsReducer(state={}, action) {
+export default function ConnectionsReducer(state=[], action) {
+    var data;
     switch (action.type) {
         case DRAG:
-            var data = [...state].map(function(connection) {
+            data = [...state].map(function(connection) {
                 if (connection.end.id === action.payload.id) {
                     connection.end.position.x = action.payload.anchor.x
                     connection.end.position.y = action.payload.anchor.y
@@ -31,8 +19,9 @@ export default function ConnectionsReducer(state={}, action) {
             });
             return data;
         case CREATE_CONN:
-            console.log(action.payload.start);
-            if (action.payload.start ) {
+            // console.log('start node', action.payload.start);
+            // console.log('end node', action.payload.end);
+            if (action.payload.start) {
                 var newConn = {
                     start: {
                         id: action.payload.start.id,
@@ -47,6 +36,17 @@ export default function ConnectionsReducer(state={}, action) {
             } else {
                 return state
             }
+        case DELETE_NODE:
+            data = [...state];
+            var filteredStart = data.filter(function(conn) {
+                return (conn.start.id !== action.payload);
+            });
+            var filteredEnd = filteredStart.filter(function(conn) {
+                return (conn.end.id !== action.payload);
+            });
+            console.log(data);
+            // console.log(filtered);
+            return filteredEnd;
 
         default:
             return state;

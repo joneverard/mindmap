@@ -1,4 +1,4 @@
-import { CREATE, UPDATE, UPDATE_ANCHOR } from '../actions';
+import { CREATE, UPDATE, DELETE_NODE, UPDATE_ANCHOR } from '../actions';
 
 var initialState = []
 initialState.push(
@@ -8,25 +8,33 @@ initialState.push(
         color: 'white',
         position: {x: 350, y: 350},
         anchor: {x: 350, y: 350},
+        edit: true,
         id: 12345678910
     }
 );
 
 
 export default function NodesReducer(state=initialState, action) {
+    var data;
     switch (action.type) {
         case CREATE:
             return [...state, action.payload];
         case UPDATE:
-            var data = [...state].map(function (node) {
+            data = [...state].map(function (node) {
                 if (node.id === action.payload.id) {
                     node.position = action.payload.position
                 }
                 return node;
             })
+            console.log('data', data);
             return data;
+        case DELETE_NODE:
+            var array = [...state];
+            var filtered = array.filter(function(node) { return node.id !== action.payload })
+            // console.log(filtered);
+            return filtered;
         case UPDATE_ANCHOR:
-            var data = [...state].map(function(node) {
+            data = [...state].map(function(node) {
                 if (node.id === action.payload.id) {
                     node.anchor = action.payload.anchor;
                 }

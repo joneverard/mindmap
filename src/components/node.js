@@ -1,43 +1,56 @@
 import React, { Component } from 'react';
 import Draggable from 'react-draggable';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NodeControls from './node_controls';
-import { selectNode, updatePosition, dragLines, updateAnchor } from '../actions';
-import { select, selectAll, drag, event } from 'd3';
+import { selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode } from '../actions';
 
 class Node extends Component {
     constructor(props) {
         super(props);
         this.setState = this.setState.bind(this);
+        this.deleteNode = this.deleteNode.bind(this);
+        this.getPosition = this.getPosition.bind(this);
     }
 
     componentDidMount() {
         var rect = this.node.getBoundingClientRect();
         this.setState({rect: rect});
-        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
+        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
         this.props.dragLines(this.props.id, anchorPos);
-        this.props.updateAnchor(this.props, anchorPos);
+        this.props.updateAnchor(this.props.id, anchorPos);
+    }
+
+    getPosition() {
+        var rect = this.node.getBoundingClientRect();
+        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
+        return {rect, anchorPos};
     }
 
     handleDrag(e) {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.dragLines(this.props.id, anchorPos);
+        console.log('drag',e);
     }
 
     handleStop(e) {
         var rect = this.node.getBoundingClientRect();
-        console.log(rect);
+        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.updatePosition(this.props.id, rect);
+        console.log('stop',e);
+    }
+
+    deleteNode() {
+        this.props.deleteNode(this.props);
     }
 
     render() {
+        var selectedId;
         if (this.props.selected) {
-            var id = this.props.selected.id;
+            selectedId = this.props.selected.id;
         } else {
-            var id = 0;
+            selectedId = 0;
         }
         return (
             <Draggable
@@ -45,24 +58,27 @@ class Node extends Component {
                 onDrag={(e) => this.handleDrag(e)}
                 onStop={(e) => {this.handleStop(e)}}
                 onMouseDown={(e) => {this.props.selectNode(this.props);}}
+                handle=".handle"
+                axis={this.props.edit ? "none" : "both"}
                 >
                 <div className="handle">
                     <div
                         ref={(node) => {this.node = node}}
-                        className={(id === this.props.id) ? "node selected" : "node"}
+                        className={(selectedId === this.props.id) ? "node selected" : "node"}
                         style={this.props.style}>
                         <p>{this.props.title}</p>
                     </div>
-                    <NodeControls selected={id} nodeId={this.props.id} />
+                    { (selectedId === this.props.id) ? <NodeControls edit={this.props.edit} delete={this.deleteNode} /> : null}
                 </div>
             </Draggable>
         )
     }
 }
-// <NodeControls selected={id} nodeId={this.props.id} />
+
+// this is getting a little bit messy now...
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor}, dispatch);
+    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode}, dispatch);
 }
 
 function mapStateToProps(state) {
@@ -71,3 +87,11 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Node);
+
+// <NodeControls selected={id} nodeId={this.props.id} />
+//                     <NodeControls selected={id} nodeId={this.props.id} delete={this.deleteNode}/>
+//                    { (selectedId === this.props.id) ? <NodeControls edit={this.props.edit} delete={this.deleteNode} editNode={this.props.editNode}/> : null}
+
+//                        {(this.props.edit) ? <EditNode title={this.props.title} /> : <p>{this.props.title}</p>}
+
+// <div className={this.props.edit ? "" : "handle">

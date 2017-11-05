@@ -1,4 +1,4 @@
-import { SELECT, UPDATE } from '../actions';
+import { SELECT, UPDATE, DELETE_NODE } from '../actions';
 
 export default function SelectReducer(state=null, action) {
     switch (action.type) {
@@ -7,6 +7,7 @@ export default function SelectReducer(state=null, action) {
             return action.payload; // payload is whole node object.
         case UPDATE:
             var selected = {...state};
+            console.log('selected', selected);
             selected.position = {
                 x: action.payload.position.x,
                 y: action.payload.position.y
@@ -16,6 +17,8 @@ export default function SelectReducer(state=null, action) {
                 y: action.payload.anchor.y
             }
             return selected;
+        case DELETE_NODE:
+            return null;
         default:
             return state;
     }

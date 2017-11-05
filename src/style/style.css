@@ -72,7 +72,7 @@ body {
     font-size: 15px;
     box-sizing: content-box;
     margin-top: 22px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .selected {
@@ -96,21 +96,52 @@ body {
 
 .node-controls button {
     display: inline-block;
-    padding: 0 5px 0 5px;
+    padding: 0 6px 0 6px;
     background-color: #fff;
+    font-size: 85%;
+    font-weight: 150%;
+    border-radius: 10px;
 }
 
 .node-controls button:first-of-type {
     margin-right: 5px;
-    margin-left: 10px;
+    margin-left: 0px;
 }
-
-
 
 .hide {
     display: none;
 }
 
-* {
-    /*border: 1px solid red;*/
+.fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+}
+
+.fade-out {
+    opacity: 0;
+    animation-name: fadeOutOpacity;
+}
+
+.fade-in, .fade-out {
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.1s;
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutOpacity {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

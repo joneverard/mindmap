@@ -1,10 +1,11 @@
-import {randomPosition} from '../utilities';
+// import {randomPosition} from '../utilities';
 export const CREATE = 'create';
 export const SELECT = 'select';
 export const UPDATE = 'update';
 export const DRAG = 'drag';
 export const CREATE_CONN = 'create_conn';
 export const UPDATE_ANCHOR = 'update_anchor';
+export const DELETE_NODE = 'delete_node';
 
 export function createNode(title) {
     var d = new Date();
@@ -47,16 +48,34 @@ export function dragLines(nodeid, anchor) {
 }
 
 export function createConnection(start, end) {
-    console.log(start, end);
+    // console.log(start, end);
     return {
         type: CREATE_CONN,
         payload: {start, end}
     }
 }
 
-export function updateAnchor(node, rect) {
+export function updateAnchor(nodeid, anchor) {
     return {
         type: UPDATE_ANCHOR,
-        payload: {id: node.id, anchor: {x: rect.x + rect.width/2, y: rect.y + rect.height/2}}
+        payload: {id: nodeid, anchor: anchor}
     }
 }
+
+export function deleteNode(node) {
+    console.log(node.id);
+    return {
+        type: DELETE_NODE,
+        payload: node.id
+    }
+}
+
+export function editNode(node) {
+    console.log('hello');
+    return {
+        type: 'hello',
+        payload: 1
+    }
+}
+
+//{x: rect.x + rect.width/2, y: rect.y + rect.height/2}
