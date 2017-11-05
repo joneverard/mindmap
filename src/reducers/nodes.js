@@ -22,7 +22,7 @@ export default function NodesReducer(state=initialState, action) {
 
         case SELECT:
             data = [...state].map(function(node) {
-                if (node) {
+                if (node && action.payload) {
                     if (node.id !== action.payload.id) {
                         node.edit = false;
                     }
