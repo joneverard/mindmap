@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { select } from 'd3';
+import { select, event } from 'd3';
+import { zoom } from 'd3-zoom';
 import { selectNode, editNode } from '../actions';
 
 
 class MapView extends Component {
     constructor(props) {
       super(props);
-        this.state = { width: '0', height: '0'};
+        this.state = { width: '0', height: '0', mouse: {x: 0, y: 0}};
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
@@ -18,11 +19,11 @@ class MapView extends Component {
         var svg = select('svg')
         svg.attr('height', this.state.height)
            .attr('width', this.state.width);
+           // .attr('z-index', -1000)
         svg.append('g')
             .attr('class', 'links')
             .attr('stroke', '#3F3F3F')
         this.renderMap();
-        // this.dosomething();
     }
 
     componentWillUnmount() {
@@ -40,6 +41,17 @@ class MapView extends Component {
     cancelSelection(e) {
         this.props.selectNode(null);
         this.props.editNode(null);
+    }
+
+    handleWheel(e)  {
+        console.log('hello');
+        // console.log(e);
+        console.log(e.deltaY);
+        console.log(this.state.mouse.x)
+    }
+
+    handleMove(e) {
+        this.setState({mouse:{x: e.clientX, y:e.clientY}})
     }
 
     renderMap() {
@@ -83,12 +95,17 @@ class MapView extends Component {
                     .attr('stroke-width', 2)
 
                     .merge(mapConnections);
-
   };
 
     render() {
         return (
-            <svg height={this.state.height} width={this.state.width} onClick={(e) => this.cancelSelection(e)}></svg>
+            <svg
+                height={this.state.height}
+                width={this.state.width}
+                onClick={(e) => this.cancelSelection(e)}
+                onWheel={(e) => this.handleWheel(e)}
+                onMouseMove={(e) => this.handleMove(e)}
+                ></svg>
         )
     }
 }
