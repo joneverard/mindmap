@@ -8,6 +8,7 @@ export const CREATE_CONN = 'create_conn';
 export const UPDATE_ANCHOR = 'update_anchor';
 export const DELETE_NODE = 'delete_node';
 export const SAVE_NODE = 'save_node';
+export const ZOOM = 'zoom';
 
 export function createNode(title) {
     var d = new Date();
@@ -83,6 +84,16 @@ export function saveNode(nodeId, title) {
     return {
         type: SAVE_NODE,
         payload: {nodeId, title} // this will eventually be a full node object containing content state from draft js aswell.
+    }
+}
+
+export function zoomMap(origin, scale) {
+    return {
+        type: ZOOM,
+        payload: {
+            origin,
+            scale: scale/1000
+        }
     }
 }
 //{x: rect.x + rect.width/2, y: rect.y + rect.height/2}

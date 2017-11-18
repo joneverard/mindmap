@@ -1,4 +1,13 @@
-import { CREATE, UPDATE_POS, DELETE_NODE, UPDATE_ANCHOR, EDIT_NODE, SELECT, SAVE_NODE } from '../actions';
+import {
+    CREATE,
+    UPDATE_POS,
+    DELETE_NODE,
+    UPDATE_ANCHOR,
+    EDIT_NODE,
+    SELECT,
+    SAVE_NODE,
+    ZOOM
+} from '../actions';
 
 var initialState = []
 initialState.push(
@@ -75,6 +84,20 @@ export default function NodesReducer(state=initialState, action) {
                 return node;
             })
             return data;
+
+        case ZOOM:
+            // need to calculate the unit vector for each node. then scale along that vector.
+            data = [...state].map(function(node) {
+                var vector = [node.anchor.x-action.payload.origin.x, node.anchor.y-action.payload.origin.y];
+                // var magnitude = Math.sqrt(Math.pow(vector[0],2)+Math.pow(vector[1],2));
+                var unitVector = [vector[0], vector[1]];
+                node.position.x += action.payload.scale*unitVector[0];
+                node.position.y += action.payload.scale*unitVector[1];
+                node.anchor.x += action.payload.scale*unitVector[0];
+                node.anchor.y += action.payload.scale*unitVector[1];
+                return node
+            });
+            return data
 
         default:
             return state;

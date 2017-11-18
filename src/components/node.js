@@ -35,6 +35,10 @@ class Node extends Component {
         this.props.updateAnchor(this.props.id, anchorPos);
     }
 
+    componentDidUpdate() {
+        console.log(this.getPosition().rect);
+    }
+
     getPosition() {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
@@ -44,6 +48,9 @@ class Node extends Component {
     handleDrag(e) {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
+        console.log('hello');
+        this.props.updatePosition(this.props.id, rect);
+        this.props.updateAnchor(this.props.id, anchorPos);
         this.props.dragLines(this.props.id, anchorPos);
         // console.log('drag',e);
     }
@@ -52,6 +59,7 @@ class Node extends Component {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
         this.props.updatePosition(this.props.id, rect);
+        this.props.updateAnchor(this.props.id, anchorPos);
         // console.log('stop',e);
     }
 
@@ -91,6 +99,7 @@ class Node extends Component {
                 position={this.props.position}
                 onDrag={(e) => this.handleDrag(e)}
                 onStop={(e) => {this.handleStop(e)}}
+                onStart={(e) => this.handleDrag(e)}
                 onMouseDown={(e) => {this.props.selectNode(this.props);}}
                 handle=".handle"
                 axis={this.props.edit ? "none" : "both"}
@@ -121,6 +130,7 @@ class Node extends Component {
 }
 
 // this is getting a little bit messy now...
+// onMouseDown={(e) => {this.props.selectNode(this.props);}}
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode, saveNode}, dispatch);

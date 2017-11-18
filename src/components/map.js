@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { select, event } from 'd3';
 import { zoom } from 'd3-zoom';
-import { selectNode, editNode } from '../actions';
+import { selectNode, editNode, zoomMap } from '../actions';
 
 
 class MapView extends Component {
@@ -44,10 +44,7 @@ class MapView extends Component {
     }
 
     handleWheel(e)  {
-        console.log('hello');
-        // console.log(e);
-        console.log(e.deltaY);
-        console.log(this.state.mouse.x)
+        this.props.zoomMap(this.state.mouse, e.deltaY);
     }
 
     handleMove(e) {
@@ -117,7 +114,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ selectNode, editNode }, dispatch);
+    return bindActionCreators({ selectNode, editNode, zoomMap }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
