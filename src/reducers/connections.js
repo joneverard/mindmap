@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN, DELETE_NODE } from '../actions';
+import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM } from '../actions';
 
 
 export default function ConnectionsReducer(state=[], action) {
@@ -9,7 +9,6 @@ export default function ConnectionsReducer(state=[], action) {
                 if (connection.end.id === action.payload.id) {
                     connection.end.position.x = action.payload.anchor.x
                     connection.end.position.y = action.payload.anchor.y
-
                 }
                 if (connection.start.id === action.payload.id) {
                     connection.start.position.x = action.payload.anchor.x
@@ -19,8 +18,6 @@ export default function ConnectionsReducer(state=[], action) {
             });
             return data;
         case CREATE_CONN:
-            // console.log('start node', action.payload.start);
-            // console.log('end node', action.payload.end);
             if (action.payload.start) {
                 var newConn = {
                     start: {
@@ -44,9 +41,24 @@ export default function ConnectionsReducer(state=[], action) {
             var filteredEnd = filteredStart.filter(function(conn) {
                 return (conn.end.id !== action.payload);
             });
-            console.log(data);
-            // console.log(filtered);
             return filteredEnd;
+
+        case ZOOM:
+            data = [...state].map(function(connection) {
+                var vector = {
+                    start: [connection.start.position.x-action.payload.origin.x,
+                            connection.start.position.y-action.payload.origin.y],
+                    end: [connection.end.position.x-action.payload.origin.x,
+                          connection.end.position.y-action.payload.origin.y]
+                }
+                connection.start.position.x += action.payload.scale*vector.start[0]
+                connection.start.position.y += action.payload.scale*vector.start[1]
+                connection.end.position.x += action.payload.scale*vector.end[0]
+                connection.end.position.y += action.payload.scale*vector.end[1]
+                return connection;
+            });
+            return data;
+
 
         default:
             return state;

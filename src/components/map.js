@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { select, event } from 'd3';
 import { zoom } from 'd3-zoom';
-import { selectNode, editNode, zoomMap } from '../actions';
+import { selectNode, editNode, zoomMap, panMap } from '../actions';
 
 
 class MapView extends Component {
@@ -41,14 +41,6 @@ class MapView extends Component {
     cancelSelection(e) {
         this.props.selectNode(null);
         this.props.editNode(null);
-    }
-
-    handleWheel(e)  {
-        this.props.zoomMap(this.state.mouse, e.deltaY);
-    }
-
-    handleMove(e) {
-        this.setState({mouse:{x: e.clientX, y:e.clientY}})
     }
 
     renderMap() {
@@ -90,18 +82,32 @@ class MapView extends Component {
                         return d.end.position.y;
                     })
                     .attr('stroke-width', 2)
-
                     .merge(mapConnections);
-  };
+    };
+
+    handlePan(e, start) {
+        this.setState({startPos: {x: e.clientX, y: e.clientY}, pan: start});
+    }
+
+    handleMove(e) {
+        this.props.handleMove(e);
+        if (this.state.pan) {
+            var newPos = {x: e.clientX, y: e.clientY}
+            this.props.panMap(this.state.startPos, newPos);
+            this.setState({startPos: newPos})
+        }
+    }
 
     render() {
         return (
             <svg
                 height={this.state.height}
                 width={this.state.width}
+                onWheel={this.props.handleWheel}
                 onClick={(e) => this.cancelSelection(e)}
-                onWheel={(e) => this.handleWheel(e)}
-                onMouseMove={(e) => this.handleMove(e)}
+                onMouseMove={(e) => {this.handleMove(e)}}
+                onMouseDown={(e) => {this.handlePan(e, true)}}
+                onMouseUp={(e) => {this.handlePan(e, false)}}
                 ></svg>
         )
     }
@@ -114,7 +120,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ selectNode, editNode, zoomMap }, dispatch);
+    return bindActionCreators({ selectNode, editNode, zoomMap, panMap }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
+
+//                 onWheel={(e) => this.handleWheel(e)}
+//                onMouseMove={(e) => this.handleMove(e)}

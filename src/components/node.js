@@ -11,7 +11,8 @@ import {
     updateAnchor,
     deleteNode,
     editNode,
-    saveNode
+    saveNode,
+    zoomMap
 } from '../actions';
 
 class Node extends Component {
@@ -27,45 +28,35 @@ class Node extends Component {
         this.state = this.props;
     }
 
-    componentDidMount() {
-        var rect = this.node.getBoundingClientRect();
-        this.setState({rect: rect});
-        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
-        this.props.dragLines(this.props.id, anchorPos);
-        this.props.updateAnchor(this.props.id, anchorPos);
-    }
-
-    componentDidUpdate() {
-        console.log(this.getPosition().rect);
-    }
-
     getPosition() {
         var rect = this.node.getBoundingClientRect();
         var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
         return {rect, anchorPos};
     }
 
+    componentDidMount() {
+        var position = this.getPosition();
+        this.setState({rect: position.rect});
+        this.props.dragLines(this.props.id, position.anchorPos);
+        this.props.updateAnchor(this.props.id, position.anchorPos);
+    }
+
     handleDrag(e) {
-        var rect = this.node.getBoundingClientRect();
-        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
-        console.log('hello');
-        this.props.updatePosition(this.props.id, rect);
-        this.props.updateAnchor(this.props.id, anchorPos);
-        this.props.dragLines(this.props.id, anchorPos);
-        // console.log('drag',e);
+        var position = this.getPosition();
+        this.props.updatePosition(this.props.id, position.rect);
+        this.props.updateAnchor(this.props.id, position.anchorPos);
+        this.props.dragLines(this.props.id, position.anchorPos);
     }
 
     handleStop(e) {
-        var rect = this.node.getBoundingClientRect();
-        var anchorPos = {x: rect.x + rect.width/2, y: rect.y + rect.height/2}
-        this.props.updatePosition(this.props.id, rect);
-        this.props.updateAnchor(this.props.id, anchorPos);
-        // console.log('stop',e);
+        var position = this.getPosition();
+        this.props.updatePosition(this.props.id, position.rect);
+        this.props.updateAnchor(this.props.id, position.anchorPos);
     }
+
 
     onTitleEdit(title) {
         this.setState({title: title});
-        console.log(this.state);
     }
 
     editNode() {
@@ -104,7 +95,11 @@ class Node extends Component {
                 handle=".handle"
                 axis={this.props.edit ? "none" : "both"}
                 >
-                <div className={this.props.edit ? "node-container" :"node-container handle"}>
+                <div
+                    className={this.props.edit ? "node-container" :"node-container handle"}
+                    style={(selectedId === this.props.id) ? {zIndex: 100} : {zIndex: 0}}
+                    onWheel={this.props.handleWheel}
+                    onMouseMove={this.props.handleMove}>
                     <div
                         ref={(node) => {this.node = node}}
                         className={(selectedId === this.props.id) ? "node selected" : "node"}
@@ -133,7 +128,16 @@ class Node extends Component {
 // onMouseDown={(e) => {this.props.selectNode(this.props);}}
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({selectNode, updatePosition, dragLines, updateAnchor, deleteNode, editNode, saveNode}, dispatch);
+    return bindActionCreators({
+        selectNode,
+        updatePosition,
+        dragLines,
+        updateAnchor,
+        deleteNode,
+        editNode,
+        saveNode,
+        zoomMap
+    }, dispatch);
 }
 
 function mapStateToProps(state) {

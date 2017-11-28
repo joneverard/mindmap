@@ -6,7 +6,8 @@ import {
     EDIT_NODE,
     SELECT,
     SAVE_NODE,
-    ZOOM
+    ZOOM,
+    PAN
 } from '../actions';
 
 var initialState = []
@@ -99,7 +100,20 @@ export default function NodesReducer(state=initialState, action) {
             });
             return data
 
+        case PAN:
+            data = [...state].map(function(node) {
+                node.position.x += action.payload.delta.x;
+                node.position.y += action.payload.delta.y;
+                node.anchor.x += action.payload.delta.x;
+                node.anchor.y += action.payload.delta.y;
+                return node;
+            });
+            return data;
+
         default:
             return state;
     }
 }
+
+// // // render map connections last...? that way they will be up to date.
+// // // need to make sure that the anchor points are correct though. currently they do not get updated to the correct position until there is a drag event on one of the nodes.

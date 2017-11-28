@@ -9,6 +9,7 @@ export const UPDATE_ANCHOR = 'update_anchor';
 export const DELETE_NODE = 'delete_node';
 export const SAVE_NODE = 'save_node';
 export const ZOOM = 'zoom';
+export const PAN = 'pan';
 
 export function createNode(title) {
     var d = new Date();
@@ -93,6 +94,20 @@ export function zoomMap(origin, scale) {
         payload: {
             origin,
             scale: scale/1000
+        }
+    }
+}
+
+export function panMap(origin, newPosition) {
+    console.log(origin, newPosition);
+    var delta = {
+        x: newPosition.x - origin.x,
+        y: newPosition.y - origin.y
+    }
+    return {
+        type: PAN,
+        payload: {
+            delta
         }
     }
 }
