@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { select, event } from 'd3';
 import { zoom } from 'd3-zoom';
-import { selectNode, editNode, zoomMap, panMap } from '../actions';
+import { selectNode, editNode, zoomMap, panMap, connectNode } from '../actions';
 
 
 class MapView extends Component {
@@ -41,6 +41,7 @@ class MapView extends Component {
     cancelSelection(e) {
         this.props.selectNode(null);
         this.props.editNode(null);
+        this.props.connectNode(null, null);
     }
 
     renderMap() {
@@ -106,8 +107,8 @@ class MapView extends Component {
                 onWheel={this.props.handleWheel}
                 onClick={(e) => this.cancelSelection(e)}
                 onMouseMove={(e) => {this.handleMove(e)}}
-                onMouseDown={(e) => {this.handlePan(e, true)}}
-                onMouseUp={(e) => {this.handlePan(e, false)}}
+                // onMouseDown={(e) => {this.handlePan(e, true)}}
+                // onMouseUp={(e) => {this.handlePan(e, false)}}
                 ></svg>
         )
     }
@@ -120,7 +121,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ selectNode, editNode, zoomMap, panMap }, dispatch);
+    return bindActionCreators({ selectNode, editNode, zoomMap, panMap, connectNode }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)

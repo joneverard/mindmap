@@ -9,6 +9,7 @@ import {
     ZOOM,
     PAN
 } from '../actions';
+import { getCylindricalCoords, getCartesianCoords } from '../utilities';
 
 var initialState = []
 initialState.push(
@@ -18,6 +19,7 @@ initialState.push(
         color: 'white',
         position: {x: 350, y: 350},
         anchor: {x: 350, y: 350},
+        selected: false,
         edit: false,
         id: 12345678910
     }
@@ -28,7 +30,18 @@ export default function NodesReducer(state=initialState, action) {
     var data;
     switch (action.type) {
         case CREATE:
-            return [...state, action.payload];
+            console.log(action.payload.selected);
+            if (action.payload.selected) {
+                var newNode = {...action.payload};
+                // calculate node position based on selected node (origin) specified radius and random angle.
+                newNode.position = getCartesianCoords(action.payload.selected.position, 100, Math.random()*Math.PI*2);
+                return [...state, newNode];
+            } else {
+                return [...state, action.payload];
+            }
+
+            // need to go through the nodes array, and calculate the position to place the new node...
+            // within a radius of the 'selected' node, if selected.
 
         case SAVE_NODE:
             data = [...state].map(function(node) {
@@ -44,6 +57,9 @@ export default function NodesReducer(state=initialState, action) {
                 if (node && action.payload ) {
                     if (node.id !== action.payload.id) {
                         node.edit = false;
+                        node.selected = false;
+                    } else if (node.id === action.payload.id) {
+                        node.selected = true;
                     }
                 };
                 return node;
@@ -101,6 +117,7 @@ export default function NodesReducer(state=initialState, action) {
             return data
 
         case PAN:
+            console.log('state', state);
             data = [...state].map(function(node) {
                 node.position.x += action.payload.delta.x;
                 node.position.y += action.payload.delta.y;
@@ -108,6 +125,7 @@ export default function NodesReducer(state=initialState, action) {
                 node.anchor.y += action.payload.delta.y;
                 return node;
             });
+            console.log('data', data);
             return data;
 
         default:
@@ -117,3 +135,24 @@ export default function NodesReducer(state=initialState, action) {
 
 // // // render map connections last...? that way they will be up to date.
 // // // need to make sure that the anchor points are correct though. currently they do not get updated to the correct position until there is a drag event on one of the nodes.
+
+// below code is for trying to get predictable places for newly created nodes. struggling to get it working.
+// decided to opt for a simpler "random" positioning, within a radius.
+                // [...state].forEach((node) => {
+                //     if (action.payload.selected.id !== node.id) {
+                //         locations.push(getCylindricalCoords(action.payload.selected.position, node.position).angle);
+                //     }
+                // });
+                // locations.sort();
+                // var difference = [];
+                // for (var i=0; i<=locations.length; i++) {
+                //     if (locations[i+1]) {
+                //         difference.push({magnitude: (locations[i+1] - locations[i]), start: locations[i+1], end: locations[i]});
+                //     } else {
+                //         difference.push(
+                //             {magnitude: 2*Math.pi-(locations[i] - locations[0]), start: locations[0], end: locations[i]}
+                //         );
+                //     }
+                // }
+                // difference.sort(function(a,b) {return (a.magnitude > b.magnitude) ? 1 : ((b.magnitude > a.magnitude) ? -1 : 0);} );
+                // console.log('difference',difference);

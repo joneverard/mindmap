@@ -12,7 +12,9 @@ import {
     deleteNode,
     editNode,
     saveNode,
-    zoomMap
+    zoomMap,
+    connectNode,
+    createConnection
 } from '../actions';
 
 class Node extends Component {
@@ -25,7 +27,6 @@ class Node extends Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.onTitleEdit = this.onTitleEdit.bind(this);
         this.saveNode = this.saveNode.bind(this);
-        this.state = this.props;
     }
 
     getPosition() {
@@ -41,6 +42,13 @@ class Node extends Component {
         this.props.updateAnchor(this.props.id, position.anchorPos);
     }
 
+    handleStart(e) {
+        var position = this.getPosition();
+        this.props.updatePosition(this.props.id, position.rect);
+        this.props.updateAnchor(this.props.id, position.anchorPos);
+        this.props.dragLines(this.props.id, position.anchorPos);
+    }
+
     handleDrag(e) {
         var position = this.getPosition();
         this.props.updatePosition(this.props.id, position.rect);
@@ -53,7 +61,6 @@ class Node extends Component {
         this.props.updatePosition(this.props.id, position.rect);
         this.props.updateAnchor(this.props.id, position.anchorPos);
     }
-
 
     onTitleEdit(title) {
         this.setState({title: title});
@@ -87,16 +94,16 @@ class Node extends Component {
         }
         return (
             <Draggable
-                position={this.props.position}
-                onDrag={(e) => this.handleDrag(e)}
+                position={this.props.node.position}
+                onStart={(e) => {this.handleStart(e)}} //this.handleStart(e) console.log('onstart', e.clientX); this.handleDrag(e)
+                onDrag={(e) => {this.handleDrag(e)}}
                 onStop={(e) => {this.handleStop(e)}}
-                onStart={(e) => this.handleDrag(e)}
-                onMouseDown={(e) => {this.props.selectNode(this.props);}}
                 handle=".handle"
-                axis={this.props.edit ? "none" : "both"}
+                axis={this.props.node.edit ? "none" : "both"}
+                onMouseDown={(e) => {this.props.selectNode(this.props.node);}}
                 >
                 <div
-                    className={this.props.edit ? "node-container" :"node-container handle"}
+                    className={this.props.edit ? "node-container" : "node-container handle"}
                     style={(selectedId === this.props.id) ? {zIndex: 100} : {zIndex: 0}}
                     onWheel={this.props.handleWheel}
                     onMouseMove={this.props.handleMove}>
@@ -106,18 +113,20 @@ class Node extends Component {
                         style={this.props.style}>
                         {this.props.edit ?
                             <EditNode
-                            title={this.props.title}
+                            title={this.props.node.title}
                             onTitleEdit={this.onTitleEdit}
                             saveNode={this.saveNode}/> :
-                            <p>{this.props.title}</p>}
+                            <p>{this.props.node.title}</p>}
                     </div>
                     { (selectedId === this.props.id) ?
                         <NodeControls
-                            edit={this.props.edit}
+                            edit={this.props.node.edit}
                             editNode={this.editNode}
                             delete={this.deleteNode}
                             cancel={(e) => this.handleCancel()}
-                            saveNode={this.saveNode} /> : null}
+                            saveNode={this.saveNode}
+                            connectNode={this.props.connectNode}
+                            node={this.props.node} /> : null}
                 </div>
             </Draggable>
         )
@@ -136,13 +145,15 @@ function mapDispatchToProps(dispatch) {
         deleteNode,
         editNode,
         saveNode,
-        zoomMap
+        zoomMap,
+        connectNode,
+        createConnection
     }, dispatch);
 }
 
 function mapStateToProps(state) {
     // should use an object as global state. with ids as keys.
-    return {selected: state.Selected}
+    return {selected: state.Selected, connect: state.connect} // messing with this atm...
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Node);
