@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM } from '../actions';
+import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN } from '../actions';
 
 
 export default function ConnectionsReducer(state=[], action) {
@@ -29,6 +29,8 @@ export default function ConnectionsReducer(state=[], action) {
                         position: {x: action.payload.end.anchor.x, y: action.payload.end.anchor.y}
                     }
                 }
+                console.log('connections', state);
+                console.log('new connection', newConn);
                 return [...state, newConn];
             } else {
                 return state
@@ -59,8 +61,27 @@ export default function ConnectionsReducer(state=[], action) {
             });
             return data;
 
+        case PAN:
+            // console.log(action.payload);
+            data = [...state].map(function(connection) {
+                connection.start.position = addVector(connection.start.position, action.payload.delta);
+                connection.end.position = addVector(connection.end.position, action.payload.delta);
+                return connection;
+            });
+            return data;
+
 
         default:
             return state;
     }
+}
+
+
+function addVector(position, delta) {
+    var newPosition = {
+        x: position.x + delta.x,
+        y: position.y + delta.y
+    }
+    console.log(newPosition);
+    return newPosition;
 }

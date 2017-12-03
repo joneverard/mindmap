@@ -15,7 +15,7 @@ class Ribbon extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        var newNode = this.props.createNode(this.state.title);
+        var newNode = this.props.createNode(this.state.title, this.props.selected);
         this.props.createConnection(this.props.selected, newNode.payload);
         this.setState({title: ''});
     }

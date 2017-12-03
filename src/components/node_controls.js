@@ -21,6 +21,7 @@ class NodeControls extends Component {
             return (
                 <div className={classList}>
                     <button type="submit" onClick={this.props.editNode}>Edit</button>
+                    <button type="submit" onClick={() => {this.props.connectNode(this.props.node, true)}}>Connect</button>
                     <button type="submit" onClick={this.props.delete}>Delete</button>
                 </div>
             )

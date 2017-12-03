@@ -10,12 +10,15 @@ export const DELETE_NODE = 'delete_node';
 export const SAVE_NODE = 'save_node';
 export const ZOOM = 'zoom';
 export const PAN = 'pan';
+export const NODE_ONE = 'node_one';
+export const CONNECT_NODES = 'connect_nodes';
 
-export function createNode(title) {
+export function createNode(title, selected) {
     var d = new Date();
     return {
         type: CREATE,
         payload: {
+            selected: selected,
             title: title,
             nodeType: 'A',
             color: '#fff',
@@ -52,7 +55,7 @@ export function dragLines(nodeid, anchor) {
 }
 
 export function createConnection(start, end) {
-    // console.log(start, end);
+    // console.log('connections',start, end);
     return {
         type: CREATE_CONN,
         payload: {start, end}
@@ -99,7 +102,7 @@ export function zoomMap(origin, scale) {
 }
 
 export function panMap(origin, newPosition) {
-    console.log(origin, newPosition);
+    // console.log(origin, newPosition);
     var delta = {
         x: newPosition.x - origin.x,
         y: newPosition.y - origin.y
@@ -108,6 +111,16 @@ export function panMap(origin, newPosition) {
         type: PAN,
         payload: {
             delta
+        }
+    }
+}
+
+export function connectNode(node, active) {
+    return {
+        type: CONNECT_NODES,
+        payload: {
+            node,
+            active
         }
     }
 }

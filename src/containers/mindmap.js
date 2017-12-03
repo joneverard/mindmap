@@ -18,28 +18,25 @@ class MindMap extends Component {
     renderNode(node) {
         let styleProps = {...this.props.style};
         styleProps.backgroundColor = node.color;
-        // console.log(this.n);
-        // console.log(this.n.getBoundingClientRect().width, this.n.getBoundingClientRect().height);
         return (
             <Node
-                title={node.title}
+                node={node}
                 style={styleProps}
-                position={node.position}
-                anchor={node.anchor}
                 id={node.id}
                 key={node.id}
-                ref={node.id}
-                edit={node.edit}
                 handleWheel={this.handleWheel}
                 handleMove={this.handleMove}
+                // ref={node.id}
+                // edit={node.edit}
+                // anchor={node.anchor}
+                // position={node.position}
+                // title={node.title}
+                // selected={node.selected}
                 />
         )
     }
 
     handleWheel(e)  {
-        this.props.nodes.map(function(node) {
-
-        })
         this.props.zoomMap(this.state.mouse, e.deltaY);
     }
 

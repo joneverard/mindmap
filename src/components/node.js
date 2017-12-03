@@ -85,6 +85,13 @@ class Node extends Component {
         this.props.selectNode(null);
     }
 
+    handleClick() {
+        if (this.props.connect.active) {
+            this.props.createConnection(this.props.connect.node, this.props.node);
+        }
+        this.props.connectNode(null, null);
+    }
+
     render() {
         var selectedId;
         if (this.props.selected) {
@@ -109,6 +116,7 @@ class Node extends Component {
                     onMouseMove={this.props.handleMove}>
                     <div
                         ref={(node) => {this.node = node}}
+                        onClick={(e) => {this.handleClick()}}
                         className={(selectedId === this.props.id) ? "node selected" : "node"}
                         style={this.props.style}>
                         {this.props.edit ?
