@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { Editor, EditorState } from 'draft-js';
 import Draggable from 'react-draggable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NodeControls from './node_controls';
 import EditNode from './edit_node';
+import NodeEditor from './node_editor';
+import NodeHeader from './node_header';
+import '../style/css/font-awesome.css';
 import {
     selectNode,
     updatePosition,
@@ -14,7 +18,8 @@ import {
     saveNode,
     zoomMap,
     connectNode,
-    createConnection
+    createConnection,
+    toggleDisplay
 } from '../actions';
 
 class Node extends Component {
@@ -27,6 +32,10 @@ class Node extends Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.onTitleEdit = this.onTitleEdit.bind(this);
         this.saveNode = this.saveNode.bind(this);
+        this.toggleDisplay = this.toggleDisplay.bind(this);
+        this.onEditorChange = this.onEditorChange.bind(this);
+
+        this.state = {editorState: EditorState.createEmpty()}
     }
 
     getPosition() {
@@ -37,7 +46,7 @@ class Node extends Component {
 
     componentDidMount() {
         var position = this.getPosition();
-        this.setState({rect: position.rect});
+        this.setState({rect: position.rect, editorState: EditorState.createWithContent(this.props.node.content)});
         this.props.dragLines(this.props.id, position.anchorPos);
         this.props.updateAnchor(this.props.id, position.anchorPos);
     }
@@ -67,11 +76,14 @@ class Node extends Component {
     }
 
     editNode() {
+        if (!this.props.node.display) {
+            this.props.toggleDisplay(this.props.node.id);
+        }
         this.props.editNode(this.props.id);
     }
 
     saveNode() {
-        this.props.saveNode(this.props.id, this.state.title);
+        this.props.saveNode(this.props.id, this.state.title, this.state.editorState.getCurrentContent());
         this.props.editNode(null);
         this.props.selectNode(null);
     }
@@ -92,6 +104,14 @@ class Node extends Component {
         this.props.connectNode(null, null);
     }
 
+    toggleDisplay() {
+        this.props.toggleDisplay(this.props.node.id);
+    }
+
+    onEditorChange(editorState) {
+        this.setState({editorState});
+    }
+
     render() {
         var selectedId;
         if (this.props.selected) {
@@ -99,10 +119,12 @@ class Node extends Component {
         } else {
             selectedId = 0;
         }
+        var handleClass = (!this.props.node.edit ? "node-container handle" : "node-container");
+        var selectedClass = (selectedId === this.props.id ? "selected node" : "node");
         return (
             <Draggable
                 position={this.props.node.position}
-                onStart={(e) => {this.handleStart(e)}} //this.handleStart(e) console.log('onstart', e.clientX); this.handleDrag(e)
+                onStart={(e) => {this.handleStart(e)}}
                 onDrag={(e) => {this.handleDrag(e)}}
                 onStop={(e) => {this.handleStop(e)}}
                 handle=".handle"
@@ -110,21 +132,30 @@ class Node extends Component {
                 onMouseDown={(e) => {this.props.selectNode(this.props.node);}}
                 >
                 <div
-                    className={this.props.edit ? "node-container" : "node-container handle"}
+                    className={handleClass}
                     style={(selectedId === this.props.id) ? {zIndex: 100} : {zIndex: 0}}
                     onWheel={this.props.handleWheel}
                     onMouseMove={this.props.handleMove}>
                     <div
                         ref={(node) => {this.node = node}}
                         onClick={(e) => {this.handleClick()}}
-                        className={(selectedId === this.props.id) ? "node selected" : "node"}
+                        className={selectedClass}
                         style={this.props.style}>
-                        {this.props.edit ?
-                            <EditNode
-                            title={this.props.node.title}
-                            onTitleEdit={this.onTitleEdit}
-                            saveNode={this.saveNode}/> :
-                            <p>{this.props.node.title}</p>}
+                        {this.props.node.edit ?
+                            <div>
+                                <EditNode
+                                title={this.props.node.title}
+                                onTitleEdit={this.onTitleEdit}
+                                saveNode={this.saveNode}/>
+                            </div> :
+                            <NodeHeader title={this.props.node.title} handleClick={this.toggleDisplay} display={this.props.node.display}/>
+                        }
+                        {this.props.node.display ?
+                            <NodeEditor
+                                onEditorChange={this.onEditorChange}
+                                editorState={this.state.editorState}
+                                edit={this.props.node.edit}/> : null }
+
                     </div>
                     { (selectedId === this.props.id) ?
                         <NodeControls
@@ -155,7 +186,8 @@ function mapDispatchToProps(dispatch) {
         saveNode,
         zoomMap,
         connectNode,
-        createConnection
+        createConnection,
+        toggleDisplay
     }, dispatch);
 }
 

@@ -1,4 +1,7 @@
 // import {randomPosition} from '../utilities';
+
+import { ContentState } from 'draft-js';
+
 export const CREATE = 'create';
 export const SELECT = 'select';
 export const UPDATE_POS = 'update';
@@ -12,6 +15,12 @@ export const ZOOM = 'zoom';
 export const PAN = 'pan';
 export const NODE_ONE = 'node_one';
 export const CONNECT_NODES = 'connect_nodes';
+export const TOGGLE_DISPLAY = 'toggle_display';
+// some notes...
+// this file is getting a little large. would be better to separate the action creators into files regarding nodes,
+// connections, save / edit functions etc.
+
+
 
 export function createNode(title, selected) {
     var d = new Date();
@@ -24,7 +33,9 @@ export function createNode(title, selected) {
             color: '#fff',
             id: d.getTime(),
             position: {x: 100, y: 100},
-            anchor: {x: 100, y: 100}
+            anchor: {x: 100, y: 100},
+            display: false,
+            content: ContentState.createFromText(' ')
         }
     }
 }
@@ -32,6 +43,13 @@ export function createNode(title, selected) {
 export function selectNode(id) {
     return {
         type: SELECT,
+        payload: id
+    }
+}
+
+export function toggleDisplay(id) {
+    return {
+        type: TOGGLE_DISPLAY,
         payload: id
     }
 }

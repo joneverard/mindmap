@@ -7,9 +7,11 @@ import {
     SELECT,
     SAVE_NODE,
     ZOOM,
-    PAN
+    PAN,
+    TOGGLE_DISPLAY
 } from '../actions';
 import { getCylindricalCoords, getCartesianCoords } from '../utilities';
+import { ContentState } from 'draft-js';
 
 var initialState = []
 initialState.push(
@@ -19,6 +21,8 @@ initialState.push(
         color: 'white',
         position: {x: 350, y: 350},
         anchor: {x: 350, y: 350},
+        display: false,
+        content: ContentState.createFromText('Hello this is a piece of content.'),
         selected: false,
         edit: false,
         id: 12345678910
@@ -62,6 +66,15 @@ export default function NodesReducer(state=initialState, action) {
                         node.selected = true;
                     }
                 };
+                return node;
+            });
+            return data;
+
+        case TOGGLE_DISPLAY:
+            data = [...state].map(function(node) {
+                if (node.id === action.payload) {
+                    node.display = !node.display;
+                }
                 return node;
             });
             return data;
