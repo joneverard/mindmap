@@ -1,11 +1,14 @@
 import { SELECT, UPDATE_POS, DELETE_NODE, CONNECT_NODES } from '../actions';
 
+const _disabled = '_disabled_';
+
+
 export default function SelectReducer(state=null, action) {
     switch (action.type) {
-        case SELECT:
+        case _disabled:
             // console.log(action.payload)
             return action.payload; // payload is whole node object.
-        case UPDATE_POS:
+        case _disabled:
             var selected = {...state};
             selected.position = {
                 x: action.payload.position.x,

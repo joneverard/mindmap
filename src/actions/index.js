@@ -23,6 +23,7 @@ export const TOGGLE_DISPLAY = 'toggle_display';
 
 
 export function createNode(title, selected) {
+    console.log('create fired');
     var d = new Date();
     return {
         type: CREATE,
@@ -41,6 +42,7 @@ export function createNode(title, selected) {
 }
 
 export function selectNode(id) {
+    console.log('select');
     return {
         type: SELECT,
         payload: id
@@ -48,6 +50,7 @@ export function selectNode(id) {
 }
 
 export function toggleDisplay(id) {
+    console.log('toggle');
     return {
         type: TOGGLE_DISPLAY,
         payload: id
@@ -55,6 +58,7 @@ export function toggleDisplay(id) {
 }
 
 export function updatePosition(nodeid, rect) {
+    console.log('update position');
     return {
         type: UPDATE_POS,
         payload: {
@@ -66,6 +70,7 @@ export function updatePosition(nodeid, rect) {
 }
 
 export function dragLines(nodeid, anchor) {
+    console.log('drag');
     return {
         type: DRAG,
         payload: {id: nodeid, anchor: anchor}
@@ -73,7 +78,7 @@ export function dragLines(nodeid, anchor) {
 }
 
 export function createConnection(start, end) {
-    // console.log('connections',start, end);
+    console.log('connections',start, end);
     return {
         type: CREATE_CONN,
         payload: {start, end}
@@ -81,6 +86,7 @@ export function createConnection(start, end) {
 }
 
 export function updateAnchor(nodeid, anchor) {
+    console.log('anchor');
     return {
         type: UPDATE_ANCHOR,
         payload: {id: nodeid, anchor: anchor}
@@ -96,6 +102,7 @@ export function deleteNode(nodeId) {
 }
 
 export function editNode(nodeId) {
+    console.log('edit');
     return {
         type: EDIT_NODE,
         payload: nodeId
@@ -103,6 +110,7 @@ export function editNode(nodeId) {
 }
 
 export function saveNode(nodeId, title) {
+    console.log('save');
     return {
         type: SAVE_NODE,
         payload: {nodeId, title} // this will eventually be a full node object containing content state from draft js aswell.
@@ -110,6 +118,7 @@ export function saveNode(nodeId, title) {
 }
 
 export function zoomMap(origin, scale) {
+    console.log('zoom');
     return {
         type: ZOOM,
         payload: {
@@ -120,6 +129,7 @@ export function zoomMap(origin, scale) {
 }
 
 export function panMap(origin, newPosition) {
+    console.log('pan');
     // console.log(origin, newPosition);
     var delta = {
         x: newPosition.x - origin.x,
@@ -134,6 +144,7 @@ export function panMap(origin, newPosition) {
 }
 
 export function connectNode(node, active) {
+    console.log('connect');
     return {
         type: CONNECT_NODES,
         payload: {

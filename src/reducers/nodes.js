@@ -34,7 +34,7 @@ export default function NodesReducer(state=initialState, action) {
     var data;
     switch (action.type) {
         case CREATE:
-            console.log(action.payload.selected);
+            // console.log(action.payload.selected);
             if (action.payload.selected) {
                 var newNode = {...action.payload};
                 // calculate node position based on selected node (origin) specified radius and random angle.
@@ -51,6 +51,7 @@ export default function NodesReducer(state=initialState, action) {
             data = [...state].map(function(node) {
                 if (node.id === action.payload.nodeId) {
                     node.title = action.payload.title;
+                    // node.content = action.payload.content;
                 }
                 return node;
             });
@@ -130,7 +131,7 @@ export default function NodesReducer(state=initialState, action) {
             return data
 
         case PAN:
-            console.log('state', state);
+            // console.log('state', state);
             data = [...state].map(function(node) {
                 node.position.x += action.payload.delta.x;
                 node.position.y += action.payload.delta.y;
@@ -138,7 +139,7 @@ export default function NodesReducer(state=initialState, action) {
                 node.anchor.y += action.payload.delta.y;
                 return node;
             });
-            console.log('data', data);
+            // console.log('data', data);
             return data;
 
         default:

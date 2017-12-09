@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN } from '../actions';
+import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN, UPDATE_ANCHOR } from '../actions';
 
 
 export default function ConnectionsReducer(state=[], action) {
@@ -17,6 +17,7 @@ export default function ConnectionsReducer(state=[], action) {
                 return connection
             });
             return data;
+
         case CREATE_CONN:
             if (action.payload.start) {
                 var newConn = {
@@ -29,8 +30,8 @@ export default function ConnectionsReducer(state=[], action) {
                         position: {x: action.payload.end.anchor.x, y: action.payload.end.anchor.y}
                     }
                 }
-                console.log('connections', state);
-                console.log('new connection', newConn);
+                // console.log('connections', state);
+                // console.log('new connection', newConn);
                 return [...state, newConn];
             } else {
                 return state

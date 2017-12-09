@@ -45,6 +45,7 @@ class Node extends Component {
     }
 
     componentDidMount() {
+        console.log('hello');
         var position = this.getPosition();
         this.setState({rect: position.rect, editorState: EditorState.createWithContent(this.props.node.content)});
         this.props.dragLines(this.props.id, position.anchorPos);
@@ -106,6 +107,12 @@ class Node extends Component {
 
     toggleDisplay() {
         this.props.toggleDisplay(this.props.node.id);
+        setTimeout(() => {
+            this.props.updateAnchor(this.props.node.id, this.getPosition().anchorPos);
+            this.props.dragLines(this.props.node.id, this.getPosition().anchorPos);
+            this.props.updatePosition(this.props.id, this.getPosition().rect);
+        }, 1);
+
     }
 
     onEditorChange(editorState) {
@@ -120,7 +127,8 @@ class Node extends Component {
             selectedId = 0;
         }
         var handleClass = (!this.props.node.edit ? "node-container handle" : "node-container");
-        var selectedClass = (selectedId === this.props.id ? "selected node" : "node");
+        // var selectedClass = (selectedId === this.props.id ? "selected node" : "node");
+        var selectedClass = (this.props.node.selected ? "selected node" : "node");
         return (
             <Draggable
                 position={this.props.node.position}
@@ -157,7 +165,7 @@ class Node extends Component {
                                 edit={this.props.node.edit}/> : null }
 
                     </div>
-                    { (selectedId === this.props.id) ?
+                    { this.props.node.selected ?
                         <NodeControls
                             edit={this.props.node.edit}
                             editNode={this.editNode}
@@ -171,7 +179,7 @@ class Node extends Component {
         )
     }
 }
-
+// store: (selectedId === this.props.id) ?
 // this is getting a little bit messy now...
 // onMouseDown={(e) => {this.props.selectNode(this.props);}}
 
