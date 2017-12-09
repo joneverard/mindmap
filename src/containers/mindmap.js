@@ -26,12 +26,6 @@ class MindMap extends Component {
                 key={node.id}
                 handleWheel={this.handleWheel}
                 handleMove={this.handleMove}
-                // ref={node.id}
-                // edit={node.edit}
-                // anchor={node.anchor}
-                // position={node.position}
-                // title={node.title}
-                // selected={node.selected}
                 />
         )
     }
@@ -67,6 +61,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({zoomMap}, dispatch);
 }
 
-// pass in the initial state into a node component next!
-// <h1 className="initial-text">{this.props.nodes[0].title}</h1>
 export default connect(mapStateToProps, mapDispatchToProps)(MindMap);

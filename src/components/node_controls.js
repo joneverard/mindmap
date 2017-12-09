@@ -8,7 +8,6 @@ class NodeControls extends Component {
     }
 
     render() {
-        // var classList = (this.props.selected === this.props.nodeId) ? "node-controls fade-in" : "node-controls hide fade-out";
         var classList = "node-controls fade-in"
         if (this.props.edit) {
             return (

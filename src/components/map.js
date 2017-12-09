@@ -19,7 +19,6 @@ class MapView extends Component {
         var svg = select('svg')
         svg.attr('height', this.state.height)
            .attr('width', this.state.width);
-           // .attr('z-index', -1000)
         svg.append('g')
             .attr('class', 'links')
             .attr('stroke', '#3F3F3F')
@@ -125,6 +124,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapView)
-
-//                 onWheel={(e) => this.handleWheel(e)}
-//                onMouseMove={(e) => this.handleMove(e)}

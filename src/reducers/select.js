@@ -5,10 +5,10 @@ const _disabled = '_disabled_';
 
 export default function SelectReducer(state=null, action) {
     switch (action.type) {
-        case _disabled:
+        case SELECT:
             // console.log(action.payload)
             return action.payload; // payload is whole node object.
-        case _disabled:
+        case UPDATE_POS:
             var selected = {...state};
             selected.position = {
                 x: action.payload.position.x,
@@ -19,23 +19,10 @@ export default function SelectReducer(state=null, action) {
                 y: action.payload.anchor.y
             }
             return selected;
-        // case ZOOM:
-        //     // need to calculate the unit vector for each node. then scale along that vector.
-        //     var selected = {...state};
 
-        //     data = [...state].map(function(node) {
-        //         var vector = [node.anchor.x-action.payload.origin.x, node.anchor.y-action.payload.origin.y];
-        //         // var magnitude = Math.sqrt(Math.pow(vector[0],2)+Math.pow(vector[1],2));
-        //         var unitVector = [vector[0], vector[1]];
-        //         node.position.x += action.payload.scale*unitVector[0];
-        //         node.position.y += action.payload.scale*unitVector[1];
-        //         node.anchor.x += action.payload.scale*unitVector[0];
-        //         node.anchor.y += action.payload.scale*unitVector[1];
-        //         return node
-        //     });
-        //     return data
         case DELETE_NODE:
             return null;
+
         default:
             return state;
     }

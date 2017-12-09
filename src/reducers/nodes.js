@@ -1,3 +1,5 @@
+import { getCylindricalCoords, getCartesianCoords } from '../utilities';
+import { ContentState } from 'draft-js';
 import {
     CREATE,
     UPDATE_POS,
@@ -10,8 +12,6 @@ import {
     PAN,
     TOGGLE_DISPLAY
 } from '../actions';
-import { getCylindricalCoords, getCartesianCoords } from '../utilities';
-import { ContentState } from 'draft-js';
 
 var initialState = []
 initialState.push(
@@ -131,7 +131,6 @@ export default function NodesReducer(state=initialState, action) {
             return data
 
         case PAN:
-            // console.log('state', state);
             data = [...state].map(function(node) {
                 node.position.x += action.payload.delta.x;
                 node.position.y += action.payload.delta.y;
@@ -139,16 +138,12 @@ export default function NodesReducer(state=initialState, action) {
                 node.anchor.y += action.payload.delta.y;
                 return node;
             });
-            // console.log('data', data);
             return data;
 
         default:
             return state;
     }
 }
-
-// // // render map connections last...? that way they will be up to date.
-// // // need to make sure that the anchor points are correct though. currently they do not get updated to the correct position until there is a drag event on one of the nodes.
 
 // below code is for trying to get predictable places for newly created nodes. struggling to get it working.
 // decided to opt for a simpler "random" positioning, within a radius.

@@ -8,7 +8,6 @@ class EditNode extends Component {
     }
 
     onInputChange(e) {
-        console.log(e.target.value);
         this.setState({title: e.target.value});
         this.props.onTitleEdit(e.target.value);
     }
@@ -28,11 +27,3 @@ class EditNode extends Component {
 }
 
 export default EditNode;
-
-
-            // <input
-            //     value={this.state.term}
-            //     onChange={(e) => this.onInputChange(e.target.value)} />
-
-
-            // value={this.state.title} onChange={(e) => this.handleChange(e.target.value)}
