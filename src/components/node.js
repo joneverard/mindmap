@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Editor, EditorState } from 'draft-js';
+import { EditorState } from 'draft-js';
 import Draggable from 'react-draggable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { debounce } from '../utilities';
 import NodeControls from './node_controls';
 import EditNode from './edit_node';
 import NodeEditor from './node_editor';
@@ -46,7 +47,11 @@ class Node extends Component {
 
     componentDidMount() {
         var position = this.getPosition();
-        this.setState({rect: position.rect, editorState: EditorState.createWithContent(this.props.node.content)});
+        this.setState({
+            rect: position.rect,
+            editorState: EditorState.createWithContent(this.props.node.content),
+            title: this.props.node.title
+        });
         this.props.dragLines(this.props.id, position.anchorPos);
         this.props.updateAnchor(this.props.id, position.anchorPos);
     }
@@ -131,7 +136,7 @@ class Node extends Component {
             <Draggable
                 position={this.props.node.position}
                 onStart={(e) => {this.handleStart(e)}}
-                onDrag={(e) => {this.handleDrag(e)}}
+                onDrag={(e) => {debounce(this.handleDrag(e), 5, true)}}
                 onStop={(e) => {this.handleStop(e)}}
                 handle=".handle"
                 axis={this.props.node.edit ? "none" : "both"}
