@@ -62,12 +62,29 @@ form {
     width: 100%;
     height: 100%;
     min-height: 40px;
-    min-width: 80px;
+    min-width: 194px;
     overflow-y: scroll;
     overflow-x: hidden;
     display: inline-block;
     border-top: 1px solid grey;
     padding-top: 5px;
+}
+
+.editor ul div {
+    display: inline-block;
+
+}
+
+.style-btn {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    border: 1px solid grey;
+}
+
+.style-btn-active {
+    color: #0081a8;
+    background-color: grey;
 }
 
 .open-icon {
