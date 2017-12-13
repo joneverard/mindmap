@@ -1,7 +1,4 @@
-import { SELECT, UPDATE_POS, DELETE_NODE, CONNECT_NODES } from '../actions';
-
-const _disabled = '_disabled_';
-
+import { SELECT, UPDATE_POS, DELETE_NODE } from '../actions';
 
 export default function SelectReducer(state=null, action) {
     switch (action.type) {

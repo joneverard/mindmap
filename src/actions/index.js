@@ -98,10 +98,10 @@ export function editNode(nodeId) {
     }
 }
 
-export function saveNode(nodeId, title) {
+export function saveNode(nodeId, title, content) {
     return {
         type: SAVE_NODE,
-        payload: {nodeId, title} // TODO - this will eventually be a full node object containing content state from draft js aswell.
+        payload: {nodeId, title, content}
     }
 }
 
@@ -110,7 +110,7 @@ export function zoomMap(origin, scale) {
         type: ZOOM,
         payload: {
             origin,
-            scale: scale/1000
+            scale: scale/3000
         }
     }
 }

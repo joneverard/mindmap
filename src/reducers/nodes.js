@@ -1,4 +1,4 @@
-import { getCylindricalCoords, getCartesianCoords } from '../utilities';
+import { getCartesianCoords } from '../utilities';
 import { ContentState } from 'draft-js';
 import {
     CREATE,
@@ -51,7 +51,7 @@ export default function NodesReducer(state=initialState, action) {
             data = [...state].map(function(node) {
                 if (node.id === action.payload.nodeId) {
                     node.title = action.payload.title;
-                    // node.content = action.payload.content;
+                    node.content = action.payload.content;
                 }
                 return node;
             });

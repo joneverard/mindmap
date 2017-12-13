@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN, UPDATE_ANCHOR } from '../actions';
+import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN } from '../actions';
 
 
 export default function ConnectionsReducer(state=[], action) {
