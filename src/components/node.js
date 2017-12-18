@@ -150,6 +150,7 @@ class Node extends Component {
                     <div
                         ref={(node) => {this.node = node}}
                         onClick={(e) => {this.handleClick()}}
+                        onDoubleClick={(e) => {this.toggleDisplay()}}
                         className={selectedClass}
                         style={this.props.style}>
                         {this.props.node.edit ?

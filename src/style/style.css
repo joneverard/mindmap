@@ -67,6 +67,7 @@ form {
     overflow-x: hidden;
     display: inline-block;
     border-top: 1px solid grey;
+    margin-top: 5px;
     padding-top: 5px;
 }
 
@@ -77,14 +78,26 @@ form {
 
 .style-btn {
     display: inline-block;
-    height: 30px;
+    /*height: 30px;*/
     width: 30px;
-    border: 1px solid grey;
+    font-size: 80%;
+    border-radius: 2px;
+    /*border: 1px solid grey;*/
+}
+
+.style-btn:hover {
+    background-color: lightgrey;
 }
 
 .style-btn-active {
     color: #0081a8;
-    background-color: grey;
+    background-color: blue;
+}
+
+.editor-ctrl {
+    border-top: 1px solid grey;
+    padding-bottom: 3px;
+    max-height: 30px;
 }
 
 .open-icon {
@@ -100,8 +113,12 @@ form {
 
 .node p {
     display: inline;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     padding: 6px 6px 6px 10px;
+}
+
+.node-header {
+    /*height: 30px;*/
 }
 
 .title-box {

@@ -3,14 +3,14 @@ import { Editor, EditorState, RichUtils } from 'draft-js';
 import '../style/Draft.css';
 
 const blockStyles = [
-    {display: 'UL', style: 'unordered-list-item'},
-    {display: 'OL', style: 'ordered-list-item'}
+    {display: 'list-ul', style: 'unordered-list-item'},
+    {display: 'list-ol', style: 'ordered-list-item'}
 ];
 
 const inlineStyles = [
-    {display: 'B', style: 'BOLD'},
-    {display: 'I', style: 'ITALIC'},
-    {display: 'U', style: 'UNDERLINE'}
+    {display: 'bold', style: 'BOLD'},
+    {display: 'italic', style: 'ITALIC'},
+    {display: 'underline', style: 'UNDERLINE'}
 ];
 
 class StyleButton extends Component {
@@ -21,10 +21,13 @@ class StyleButton extends Component {
             this.props.onToggle(this.props.style);
         }
     }
+
     render() {
+        var className = `fa fa-${this.props.display}`;
+        console.log(this.props.active);
         return (
             <div className={(this.props.active ? "style-btn style-btn-active" : "style-btn")} onMouseDown={this.onToggle}>
-                {this.props.display}
+                <i className={className} aria-hidden="true"></i>
             </div>
         )
     }
@@ -39,9 +42,9 @@ class EditorControls extends Component {
         const contentSelection = this.props.editorState.getSelection();
         const blockType = this.props.editorState.getCurrentContent().getBlockForKey(contentSelection.getStartKey()).getType();
         var currentStyle = this.props.editorState.getCurrentInlineStyle();
-        console.log(currentStyle);
+        // console.log(currentStyle);
         return (
-            <div>
+            <div className="editor-ctrl">
                 {inlineStyles.map((styleBtn) => {
                     return (
                         <StyleButton
@@ -49,7 +52,7 @@ class EditorControls extends Component {
                             key={styleBtn.display}
                             style={styleBtn.style}
                             display={styleBtn.display}
-                            active={styleBtn.style === blockType}
+                            active={(styleBtn.style === blockType)}
                         />
                     )
                 })}

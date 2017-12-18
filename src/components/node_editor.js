@@ -32,16 +32,19 @@ class NodeEditor extends React.Component {
 
   render() {
     return (
-      <div className="editor" style={{resize: (this.props.edit ? 'both' : 'none')}}>
+      <div>
+        {this.props.edit ?
         <EditorControls
           toggleBlock={this.toggleBlock}
           toggleInline={this.toggleInline}
           editorState={this.props.editorState}
-        />
-        <Editor
-          readOnly={!this.props.edit}
-          editorState={this.props.editorState}
-          onChange={this.onChange} />
+        /> : null}
+        <div className="editor" style={{resize: (this.props.edit ? 'both' : 'none')}}>
+          <Editor
+            readOnly={!this.props.edit}
+            editorState={this.props.editorState}
+            onChange={this.onChange} />
+        </div>
       </div>
     );
   }
