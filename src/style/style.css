@@ -140,6 +140,17 @@ svg {
     overflow-y: hidden;
 }
 
+/*.connection line:last-of-type {
+    opacity: 0;
+}
+
+.connection line:hover {
+    stroke: #0081a8;
+    opacity: 1;
+}*/
+
+
+
 body {
     overflow-y: hidden;
 }

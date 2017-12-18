@@ -71,9 +71,11 @@ export function dragLines(nodeid, anchor) {
 }
 
 export function createConnection(start, end) {
+    var d = new Date();
+    var id = Math.floor(Math.random()*d.getTime());
     return {
         type: CREATE_CONN,
-        payload: {start, end}
+        payload: {start, end, id}
     }
 }
 

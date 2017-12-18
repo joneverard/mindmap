@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { select } from 'd3';
 import { selectNode, editNode, zoomMap, panMap, connectNode } from '../actions';
-
+import Connection from './connection';
 
 class MapView extends Component {
     constructor(props) {
       super(props);
         this.state = { width: '0', height: '0', mouse: {x: 0, y: 0}};
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.renderLine = this.renderLine.bind(this);
     }
 
     componentDidMount() {
@@ -21,7 +22,7 @@ class MapView extends Component {
         svg.append('g')
             .attr('class', 'links')
             .attr('stroke', '#3F3F3F')
-        this.renderMap();
+        // this.renderMap();
     }
 
     componentWillUnmount() {
@@ -33,7 +34,8 @@ class MapView extends Component {
     }
 
     componentDidUpdate() {
-        this.renderMap();
+        // this.renderMap();
+        this.renderLine();
     }
 
     cancelSelection(e) {
@@ -60,6 +62,9 @@ class MapView extends Component {
                 .attr('y2', function(d) {
                     return d.end.position.y;
                 })
+                .attr('id', function(d) {
+                    return Math.random()*1000000;
+                })
 
             mapConnections
                 .exit()
@@ -80,6 +85,9 @@ class MapView extends Component {
                     .attr('y2', function(d) {
                         return d.end.position.y;
                     })
+                    .attr('id', function(d) {
+                        return Math.random()*1000000
+                    })
                     .attr('stroke-width', 2)
                     .merge(mapConnections);
     };
@@ -97,7 +105,14 @@ class MapView extends Component {
         }
     }
 
+    renderLine(conn) {
+        if (conn) {
+            return (<Connection conn={conn} key={conn.id} />); // this needs a key and an id.
+        }
+    }
+
     render() {
+        // console.log(this.props.children)
         return (
             <svg
                 height={this.state.height}
@@ -105,9 +120,12 @@ class MapView extends Component {
                 onWheel={this.props.handleWheel}
                 onClick={(e) => this.cancelSelection(e)}
                 onMouseMove={(e) => {this.handleMove(e)}}
+                ref={svg => this.svg = svg}
                 // onMouseDown={(e) => {this.handlePan(e, true)}}
                 // onMouseUp={(e) => {this.handlePan(e, false)}}
-                ></svg>
+                >
+                {this.props.connections.map(this.renderLine)}
+                </svg>
         )
     }
 }

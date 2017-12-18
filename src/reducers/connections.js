@@ -28,7 +28,8 @@ export default function ConnectionsReducer(state=[], action) {
                     end: {
                         id: action.payload.end.id,
                         position: {x: action.payload.end.anchor.x, y: action.payload.end.anchor.y}
-                    }
+                    },
+                    id: action.payload.id
                 }
                 return [...state, newConn];
             } else {
