@@ -20,7 +20,7 @@ class Connection extends Component {
 
     render() {
         return (
-            <g className="connection">
+            <g className="connection" onClick={(e) => {setTimeout(this.props.handleClick, 1, this.props.id)}}>
                 <SVGLine
                     conn={this.props.conn}
                     lineWidth={this.state.lineWidth}

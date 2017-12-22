@@ -29,3 +29,12 @@ export function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 };
+
+export function getHalfWayPoint(connection) {
+    if (connection) {
+        return {
+            x: (connection.end.position.x + connection.start.position.x) / 2.0,
+            y: (connection.end.position.y + connection.start.position.y) / 2.0
+        };
+    }
+}

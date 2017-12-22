@@ -1,4 +1,4 @@
-import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN } from '../actions';
+import { DRAG, CREATE_CONN, DELETE_NODE, ZOOM, PAN, DELETE_CONNECTION } from '../actions';
 
 
 export default function ConnectionsReducer(state=[], action) {
@@ -68,6 +68,9 @@ export default function ConnectionsReducer(state=[], action) {
                 return connection;
             });
             return data;
+
+        case DELETE_CONNECTION:
+            return [...state].filter(conn => (action.payload !== conn.id));
 
 
         default:

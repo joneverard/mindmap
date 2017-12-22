@@ -24,7 +24,7 @@ class StyleButton extends Component {
 
     render() {
         var className = `fa fa-${this.props.display}`;
-        console.log(this.props.active);
+        // console.log(this.props.active);
         return (
             <div className={(this.props.active ? "style-btn style-btn-active" : "style-btn")} onMouseDown={this.onToggle}>
                 <i className={className} aria-hidden="true"></i>

@@ -14,6 +14,7 @@ export const PAN = 'pan';
 export const NODE_ONE = 'node_one';
 export const CONNECT_NODES = 'connect_nodes';
 export const TOGGLE_DISPLAY = 'toggle_display';
+export const DELETE_CONNECTION = 'delete_connection';
 // some notes...
 // this file is getting a little large. would be better to separate the action creators into files regarding nodes,
 // connections, save / edit functions etc.
@@ -83,6 +84,13 @@ export function updateAnchor(nodeid, anchor) {
     return {
         type: UPDATE_ANCHOR,
         payload: {id: nodeid, anchor: anchor}
+    }
+}
+
+export function deleteConnection(id) {
+    return {
+        type: DELETE_CONNECTION,
+        payload: id
     }
 }
 

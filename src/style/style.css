@@ -140,16 +140,17 @@ svg {
     overflow-y: hidden;
 }
 
-/*.connection line:last-of-type {
-    opacity: 0;
+.floating-option {
+    position: absolute;
+    width: 75px;
+    height: 38px;
 }
 
-.connection line:hover {
-    stroke: #0081a8;
-    opacity: 1;
-}*/
-
-
+.floating-option button {
+    border-radius: 10px;
+    padding: 0 10px;
+    background-color: white;
+}
 
 body {
     overflow-y: hidden;
